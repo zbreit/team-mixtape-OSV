@@ -10,6 +10,7 @@ private:
   Direction chooseDirectionOfTravel();
   void shiftInDirectionOfTravel(Direction direction);
   boolean findPathToMissionSite();
+  void driveToMissionSite();
   Navigator();
 public:
   void navigate();

@@ -25,6 +25,8 @@ DriveTrain* DriveTrain::getInstance() {
  * The angle must be in the range [0, 360]
  */
 void DriveTrain::turnTo(double angle) {
+  Serial.print("Turning to ");
+  Serial.println(angle);
   double angularError = getAngularDifference(LocationManager::getHeading(), angle);
   double speed;
   
@@ -33,7 +35,7 @@ void DriveTrain::turnTo(double angle) {
     turn(speed);
     angularError = getAngularDifference(LocationManager::getHeading(), angle);
   }
-  Serial.print("Reached angle ");
+  Serial.print("Reached ");
   Serial.println(angle);
   //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
   DriveTrain* driveTrain = instance;
@@ -48,15 +50,15 @@ void DriveTrain::turnTo(double angle) {
 void DriveTrain::driveStraight(double distance) {
     Coordinate currentLocation = LocationManager::getCurrentLocation();
     Coordinate desiredLocation = advance(currentLocation, distance);
-    
-    int directionalMultiplier = (distance > 0) ? 1 : -1;
-    double distanceError = directionalMultiplier * distanceBetween(currentLocation, desiredLocation);
+    double distanceError = distanceBetween(currentLocation, desiredLocation);
     double speed;
     
     while(abs(distanceError) > Distance::THRESHOLD) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
-      distanceError = directionalMultiplier * distanceBetween(currentLocation, desiredLocation);
+      distanceError = distanceBetween(currentLocation, desiredLocation);
+      Serial.print("Distance Error: ");
+      Serial.println(distanceError);
       drive(speed);
     }
     Serial.println("DROVE SUCCESSFULLY");

@@ -36,4 +36,4 @@ const double FireSite::RADIUS = 0.23 / 2;
 
 // PID Constants
 const double PIDConstants::TURN_P = 0.05;
-const double PIDConstants::DRIVE_P = 1.75;
+const double PIDConstants::DRIVE_P = 2.;

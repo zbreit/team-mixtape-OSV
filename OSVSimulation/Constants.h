@@ -28,6 +28,7 @@ namespace Pins {
 namespace Distance {
   extern const byte SAMPLE_NUMBER; // The number of distance measurements to take before returning the median
   extern const double THRESHOLD; // The distance, in meters, for when two positions are considered equal
+  extern const double OBSTACLE_PRESENT; // The distance, in meters, for when an obstacle is in the way
 }
 
 namespace OSV {
