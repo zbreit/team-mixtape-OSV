@@ -6,6 +6,9 @@ private:
   static Navigator* instance;
   DriveTrain* driveTrain;
   void driveOverRockyTerrain();
+  void verticallyAlignToMissionSite();
+  Direction chooseDirectionOfTravel();
+  void shiftInDirectionOfTravel(Direction direction);
   boolean findPathToMissionSite();
   Navigator();
 public:

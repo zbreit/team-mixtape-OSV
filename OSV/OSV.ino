@@ -14,16 +14,12 @@
 #include "Navigator.h"
 
 void setup() {
-  Serial.begin(9600);
-  Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_RECEIVER, Pins::WIFI_TRANSMITTER);
+  while(!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_RECEIVER, Pins::WIFI_TRANSMITTER)) {}
   Navigator* navigator = Navigator::getInstance();
   navigator->navigate();
   delay(2000);
 }
 
 void loop() {
-  Serial.print("FRONT: ");
-  Serial.println(LocationManager::getFrontDistance());
-  Serial.print("SIDE: ");
-  Serial.println(LocationManager::getSideDistance());
+  
 }

@@ -35,7 +35,9 @@ void DriveTrain::turnTo(double angle) {
   }
   Serial.print("Reached angle ");
   Serial.println(angle);
-  //TODO: add in a stop command after this
+  //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
+  DriveTrain* driveTrain = instance;
+  TankSimulation.turnOffMotors();
 }
 
 /**
@@ -45,27 +47,22 @@ void DriveTrain::turnTo(double angle) {
  */
 void DriveTrain::driveStraight(double distance) {
     Coordinate currentLocation = LocationManager::getCurrentLocation();
-    Coordinate desiredLocation = advanceForward(currentLocation, distance);
-    double distanceError = distanceBetween(currentLocation, desiredLocation);
+    Coordinate desiredLocation = advance(currentLocation, distance);
+    
+    int directionalMultiplier = (distance > 0) ? 1 : -1;
+    double distanceError = directionalMultiplier * distanceBetween(currentLocation, desiredLocation);
     double speed;
     
-    while(distanceError > Distance::THRESHOLD) {
+    while(abs(distanceError) > Distance::THRESHOLD) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
-      distanceError = distanceBetween(currentLocation, desiredLocation);
+      distanceError = directionalMultiplier * distanceBetween(currentLocation, desiredLocation);
       drive(speed);
-
-      Serial.print("Error: ");
-      Serial.println(distanceError);
-      Serial.print("Speed: ");
-      Serial.println(speed);
-      Serial.print("Current Y: ");
-      Serial.println(currentLocation.y);
-      Serial.println();
     }
     Serial.println("DROVE SUCCESSFULLY");
-    //TODO: ADD THE STOP() BACK IN AFTER FINISHING SIMULATION
-//    stop();
+    //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
+    DriveTrain* driveTrain = instance;
+    TankSimulation.turnOffMotors();
 }
 
 /**

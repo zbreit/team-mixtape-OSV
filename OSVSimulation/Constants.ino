@@ -22,7 +22,7 @@ const pin Pins::IR_DISTANCE = A1;
 const pin Pins::IR_FLAME_SENSOR = A2;
 
 // OSV Dimensions
-const double OSV::LENGTH = 0.30;
+const double OSV::LENGTH = 0.26; // Change back to 0.3 for real OSV
 const double OSV::WIDTH = 0.25;
 const int OSV::ARUCO_MARKER_ID = 3;
 
@@ -32,8 +32,8 @@ const double Field::WIDTH = 2.;
 const double Field::ROCKY_TERRAIN_X = 1.25;
 
 // Fire Site Dimensions
-const double FireSite::RADIUS = 0.23;
+const double FireSite::RADIUS = 0.23 / 2;
 
 // PID Constants
 const double PIDConstants::TURN_P = 0.05;
-const double PIDConstants::DRIVE_P = 1;
+const double PIDConstants::DRIVE_P = 1.75;

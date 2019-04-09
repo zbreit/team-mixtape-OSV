@@ -5,7 +5,21 @@
  */
 const NewPing LocationManager::sideDistanceSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
 const SharpDistSensor LocationManager::frontDistanceSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
-const Coordinate& LocationManager::MISSION_LOCATION = Enes100Simulation.destination;
+Coordinate* LocationManager::MISSION_LOCATION = 0;
+
+/**
+ * =======================
+ *   CONVENIENCE FUNCTION
+ * =======================
+ */
+
+/**
+ * Delays the program until the vision system updates
+ */
+static void LocationManager::waitForLocationUpdate() {
+  //TODO: might need to add in a timer to prevent an infinite loop
+  while(!Enes100Simulation.updateLocation()) {}
+}
 
 /**
  * ======================
@@ -18,8 +32,7 @@ const Coordinate& LocationManager::MISSION_LOCATION = Enes100Simulation.destinat
  * @return a coordinate with the OSV's current position
  */
 static Coordinate LocationManager::getCurrentLocation() {
-  //TODO: might need to add in a timer to prevent an infinite loop
-  while(!Enes100Simulation.updateLocation()) {}
+  waitForLocationUpdate();
   return Enes100Simulation.location;
 }
 
@@ -59,10 +72,17 @@ static double LocationManager::getBackX() {
 }
 
 /**
- * @return the y location of the front of the OSV whe it is vertical
+ * @return the y location of the front of the OSV when it is vertical
  */
 static double LocationManager::getFrontY() {
     return getY() + (OSV::LENGTH / 2);
+}
+
+/**
+ * @return the y location of the back of the OSV when it is vertical
+ */
+static double LocationManager::getBackY() {
+    return getY() - (OSV::LENGTH / 2);
 }
 
 /**
@@ -98,11 +118,21 @@ static double LocationManager::getHeading() {
  * to the right of the robot (assuming the robot is facing along the +Y axis)
  */
 static bool LocationManager::obstaclesAreBlockingTheRight() {
-  return (getMissionX() - getSideX() + Distance::THRESHOLD) > getSideDistance();
+  //TODO: replace Enes100Simulation.readDistanceSensor(4) with getSideDistance();
+  return (getMissionX() - getSideX() + Distance::THRESHOLD) > Enes100Simulation.readDistanceSensor(4);
 }
 
 static bool LocationManager::obstaclesAreBlockingTheFront(double distanceToMissionSite) {
-  return distanceToMissionSite + Distance::THRESHOLD > getFrontDistance();
+  //TODO: replace Enes100Simulation.readDistanceSensor(1) with getFrontDistance();
+  return distanceToMissionSite + Distance::THRESHOLD > Enes100Simulation.readDistanceSensor(1);
+}
+
+static bool LocationManager::cantMoveInDirectionOfTravel(Direction direction) {
+  if(direction == Direction::UP) {
+     return getFrontY() + OSV::LENGTH > Field::WIDTH;
+  } else {
+     return getBackY() - OSV::LENGTH < 0.;
+  }
 }
 
 /**
@@ -110,33 +140,40 @@ static bool LocationManager::obstaclesAreBlockingTheFront(double distanceToMissi
  *   MISSION LOCATION INFO
  * ========================
  */
-
-static double LocationManager::getMissionY() {
-    Serial.print("MISSION LOCATION Y: ");
-    Serial.println(MISSION_LOCATION.y);
-    return MISSION_LOCATION.y;
-}
-
-static double LocationManager::getMissionX() {
-    return MISSION_LOCATION.x;
-}
-
-// Gives the x-location of the mission site's center
-static double LocationManager::getMissionCenterX() {
-    return getMissionX() + FireSite::RADIUS;
+static Coordinate* LocationManager::getMissionLocation() {
+  if(MISSION_LOCATION == 0) {
+    waitForLocationUpdate();
+    MISSION_LOCATION = &Enes100Simulation.destination;
+  }
+  return MISSION_LOCATION;
 }
 
 // Gives the y-location of the mission site's center
 static double LocationManager::getMissionCenterY() {
-    return getMissionY() - FireSite::RADIUS;
+    return getMissionLocation()->y;
+}
+
+// Gives the x-location of the mission site's center
+static double LocationManager::getMissionCenterX() {
+    return getMissionLocation()->x;
+}
+
+// X of the left of the mission
+static double LocationManager::getMissionX() {
+    return getMissionCenterX() - FireSite::RADIUS;
+}
+
+// Y of the top of the mission
+static double LocationManager::getMissionY() {
+    return getMissionCenterY() + FireSite::RADIUS;
 }
 
 // Gives the y-location of the bottom of the mission site
 static double LocationManager::getMissionBottomY() {
-    return getMissionY() - 2 * FireSite::RADIUS;
+    return getMissionCenterY() - FireSite::RADIUS;
 }
 
 // Gives the y-location of the bottom of the mission site
 static double LocationManager::getMissionBackX() {
-    return getMissionY() + 2 * FireSite::RADIUS;
+    return getMissionCenterX() + FireSite::RADIUS;
 }

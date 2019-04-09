@@ -16,16 +16,18 @@
 
 void setup() {
 	TankSimulation.begin();
-  Serial.begin(9600);
-  Enes100Simulation.begin();
+  while(!Enes100Simulation.begin()) {}
   Navigator* navigator = Navigator::getInstance();
-  navigator->navigate();
-  delay(2000);
+//  navigator->navigate();
 }
 
 void loop() {
-  Serial.print("FRONT: ");
+  DriveTrain::getInstance()->drive(1.);
+  Serial.print("Right: ");
+  Serial.println();
+  Serial.print("Front: ");
   Serial.println(Enes100Simulation.readDistanceSensor(1));
-  Serial.print("SIDE: ");
-  Serial.println(Enes100Simulation.readDistanceSensor(4));
+  Serial.println();
+  delay(2000);
+  
 }

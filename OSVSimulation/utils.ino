@@ -1,11 +1,34 @@
 /**
  * Returns the distance between two coordinates
- * @param point1 the first point
- * @param point2 the second point
- * @return the distance between the two points
+ * @param startPoint the first point
+ * @param endPoint the second point
+ * @return the distance between the two points. If B is behind the vector of A, 
  */
-double distanceBetween(Coordinate& point1, Coordinate& point2) {
-    return sqrt(pow(point1.x - point2.x, 2) + pow(point1.y - point2.y, 2));
+double distanceBetween(Coordinate& startPoint, Coordinate& endPoint) {
+    // Multiply the distance by -1 if the endpoint is beind the startpoint
+    int directionalMultiplier = isFacing(startPoint, endPoint) ? 1 : -1;
+    
+    return directionalMultiplier * sqrt(pow(startPoint.x - endPoint.x, 2) + pow(startPoint.y - endPoint.y, 2));
+}
+
+/**
+ * Determine if the vector of the start
+ */
+bool isFacing(Coordinate& startPoint, Coordinate& endPoint) {
+  // Define the component vector for the starting point's orientation
+  double startPointX = cos(startPoint.theta);
+  double startPointY = sin(startPoint.theta);
+
+  // Now, we find the x and y distance between the endpoint and the start point
+  // as the second vector's components
+  double endPointX = endPoint.x - startPoint.x;
+  double endPointY = endPoint.y - startPoint.y;
+
+  // Now, if the dot product of 
+  double dotProduct = (startPointX * endPointX) + (startPointY + endPointY);
+  Serial.print("Dot product is: ");// TODO: remove
+  Serial.println(dotProduct);
+  return dotProduct > 0;
 }
 
 /**
@@ -15,11 +38,10 @@ double distanceBetween(Coordinate& point1, Coordinate& point2) {
  * @param distance how far you wish to extend the given vector. Must be positive.
  * @return a coordinate with the advanced location
  */
-Coordinate advanceForward(Coordinate& location, double distance) {
+Coordinate advance(Coordinate& location, double distance) {
   double xOffset = distance * cos(location.theta);
   double yOffset = distance * sin(location.theta);
-
-  return Coordinate(location.x + xOffset, location.y + yOffset, location.theta);
+  return Coordinate(location.x + xOffset, location.y + yOffset);
 }
 
 /**
@@ -49,3 +71,18 @@ double getAngularDifference(double startingAngle, double endAngle) {
     return difference + 360.;
   }
 }
+
+/**
+ * Prints the points x, y and theta to the serial monitor
+ */
+void printPoint(Coordinate point, String nameOfPoint) {
+  Serial.print(nameOfPoint);
+  Serial.print(": (");
+  Serial.print(point.x);
+  Serial.print(", ");
+  Serial.print(point.y);
+  Serial.print(", ");
+  Serial.print(point.theta);
+  Serial.println(")");
+}
+ 

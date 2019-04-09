@@ -4,11 +4,13 @@
 class LocationManager {
 private:
   LocationManager() {}
-  static const Coordinate* MISSION_LOCATION;
+  static Coordinate* MISSION_LOCATION;
   static const NewPing sideDistanceSensor;
   static const SharpDistSensor frontDistanceSensor;
   static void waitForLocationUpdate();
+  static Coordinate* getMissionLocation();
 public:
+
   // OSV Vision system info
   static Coordinate getCurrentLocation();
   static double getX();
@@ -16,6 +18,7 @@ public:
   static double getHeading();
   static double getFrontX();
   static double getFrontY();
+  static double getBackY();
   static double getBackX();
   static double getSideX();
 
@@ -24,9 +27,9 @@ public:
   static double getSideDistance();
   static bool obstaclesAreBlockingTheRight();
   static bool obstaclesAreBlockingTheFront(double distanceToMissionSite);
+  static bool cantMoveInDirectionOfTravel(Direction direction);
 
   // Mission information
-  static Coordinate getMissionLocation();
   static double getMissionX();
   static double getMissionY();
   static double getMissionCenterX();
