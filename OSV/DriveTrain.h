@@ -5,17 +5,22 @@
 
 class DriveTrain {
 private:
+    static DriveTrain* instance;
     DCMotor leftMotor;
     DCMotor rightMotor;
-
-public:
-    /**
-     * Creates a new drive train
-     */
     DriveTrain();
-
     
-    void turnTo();
+    /* Private convenience methods */
+    void setBothSidesTo(double speed);
+    
+public:
+    void turnTo(double angle);
+    void driveStraight(double distance);
+    void drive(double speed=1);
+    void turn(double speed);
+    void stop();
+    static DriveTrain* getInstance();
+
 };
 
 #endif

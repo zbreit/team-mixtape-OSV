@@ -3,28 +3,14 @@
 
 class FlameSensor {
 private:
-  const byte dataPin;
+  const pin dataPin;
 
-   // The raw analog value below which a reading will be considered a flame
+  // The raw analog value below which a reading will be considered a flame
   const static int FLAME_DETECTED_THRESHOLD = 35;
 
 public:
-  /**
-   * Creates a flame sensor
-   * @param dataPin the analog pin to which the sensor is physically connected
-   */
-  FlameSensor(byte dataPin);
-
-  /**
-   * @return the raw analog reading from the sensor's pin
-   */
+  FlameSensor(pin dataPin);
   int getRawValue();
-
-  /**
-   * Determine whether or not a flame is currently in front of the sensor.
-   * @param numberOfSamples the number of samples to take before making the determination
-   * @param samplingRate the number of samples to be taken per second
-   */
   bool detectFlame(int numberOfSamples = 100, int samplingRate = 100);
 };
 
