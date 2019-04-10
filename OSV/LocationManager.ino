@@ -3,8 +3,8 @@
  *   STATIC MEMBER SETUP
  * =======================
  */
-const NewPing LocationManager::sideDistanceSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
-const SharpDistSensor LocationManager::frontDistanceSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
+const NewPing LocationManager::frontRightSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
+const SharpDistSensor LocationManager::frontLeftSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
 Coordinate* LocationManager::MISSION_LOCATION = 0;
 
 /**
@@ -74,14 +74,14 @@ static double LocationManager::getBackX() {
 /**
  * @return the y location of the front of the OSV when it is vertical
  */
-static double LocationManager::getFrontY() {
+static double LocationManager::getTopY() {
     return getY() + (OSV::LENGTH / 2);
 }
 
 /**
  * @return the y location of the back of the OSV when it is vertical
  */
-static double LocationManager::getBackY() {
+static double LocationManager::getBottomY() {
     return getY() - (OSV::LENGTH / 2);
 }
 
@@ -104,41 +104,42 @@ static double LocationManager::getHeading() {
  */
  
 /**
- * @return the distance retreived by the side distance sensor, in meters
+ * @return the distance retreived by the left front distance sensor, in meters
  */
-static double LocationManager::getFrontDistance() {
-    frontDistanceSensor.setModel(SharpDistSensor::GP2Y0A41SK0F_5V_DS);
-    return frontDistanceSensor.getDist() / 1000.;
+static double LocationManager::getFrontLeftDistance() {
+    frontLeftSensor.setModel(SharpDistSensor::GP2Y0A41SK0F_5V_DS);
+    return frontLeftSensor.getDist() / 1000.;
 }
 
 /**
- * @return the distance retreived by the side distance sensor, in meters
+ * @return the distance retreived by the right front distance sensor, in meters
  */
-static double LocationManager::getSideDistance() {
-    unsigned int medianTimePerPing = sideDistanceSensor.ping_median(Distance::SAMPLE_NUMBER);
-    return sideDistanceSensor.convert_cm(medianTimePerPing);
+static double LocationManager::getFrontRightDistance() {
+    unsigned int medianTimePerPing = frontRightSensor.ping_median(Distance::SAMPLE_NUMBER);
+    return frontRightSensor.convert_cm(medianTimePerPing);
 }
 
 /**
  * @return whether there are obstacles to the right of the robot blocking the path
  * to the right of the robot (assuming the robot is facing along the +Y axis)
  */
-static bool LocationManager::obstaclesAreBlockingTheRight() {
+static bool LocationManager::obstaclesBlockingTheFront() {
   //TODO: replace LocationManager::getSideDistance() with getSideDistance();
-  return (getMissionX() - getSideX() + Distance::THRESHOLD) > LocationManager::getSideDistance();
+  return obstaclesBlockingTheFrontLeft() || obstaclesBlockingTheFrontRight();
 }
 
-static bool LocationManager::obstaclesAreBlockingTheFront(double distanceToMissionSite) {
+/**
+ * @return whether there are obstacles to the right of the robot blocking the path
+ * to the right of the robot (assuming the robot is facing along the +Y axis)
+ */
+static bool LocationManager::obstaclesBlockingTheFrontRight() {
+  //TODO: replace LocationManager::getSideDistance() with getSideDistance();
+  return LocationManager::getFrontRightDistance() < Distance::SAFE_FRONT_DISTANCE;
+}
+
+static bool LocationManager::obstaclesBlockingTheFrontLeft() {
   //TODO: replace LocationManager::getFrontDistance() with getFrontDistance();
-  return distanceToMissionSite + Distance::THRESHOLD > LocationManager::getFrontDistance();
-}
-
-static bool LocationManager::cantMoveInDirectionOfTravel(Direction direction) {
-  if(direction == Direction::UP) {
-     return getFrontY() + OSV::LENGTH > Field::WIDTH;
-  } else {
-     return getBackY() - OSV::LENGTH < 0.;
-  }
+  return LocationManager::getFrontLeftDistance() < Distance::SAFE_FRONT_DISTANCE;
 }
 
 /**

@@ -3,8 +3,8 @@
  *   STATIC MEMBER SETUP
  * =======================
  */
-const NewPing LocationManager::sideDistanceSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
-const SharpDistSensor LocationManager::frontDistanceSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
+const NewPing LocationManager::frontRightSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
+const SharpDistSensor LocationManager::frontLeftSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
 Coordinate* LocationManager::MISSION_LOCATION = 0;
 
 /**
@@ -74,14 +74,14 @@ static double LocationManager::getBackX() {
 /**
  * @return the y location of the front of the OSV when it is vertical
  */
-static double LocationManager::getFrontY() {
+static double LocationManager::getTopY() {
     return getY() + (OSV::LENGTH / 2);
 }
 
 /**
  * @return the y location of the back of the OSV when it is vertical
  */
-static double LocationManager::getBackY() {
+static double LocationManager::getBottomY() {
     return getY() - (OSV::LENGTH / 2);
 }
 
@@ -104,12 +104,12 @@ static double LocationManager::getHeading() {
  */
  
 /**
- * @return the distance retreived by the side distance sensor, in meters
+ * @return the distance retreived by the left front distance sensor, in meters
  */
 
 
 /**
- * @return the distance retreived by the side distance sensor, in meters
+ * @return the distance retreived by the right front distance sensor, in meters
  */
 
 
@@ -117,22 +117,23 @@ static double LocationManager::getHeading() {
  * @return whether there are obstacles to the right of the robot blocking the path
  * to the right of the robot (assuming the robot is facing along the +Y axis)
  */
-static bool LocationManager::obstaclesAreBlockingTheRight() {
-  //TODO: replace Enes100Simulation.readDistanceSensor(4) with getSideDistance();
-  return (getMissionX() - getSideX() + Distance::THRESHOLD) > Enes100Simulation.readDistanceSensor(4);
+static bool LocationManager::obstaclesBlockingTheFront() {
+  //TODO: replace LocationManager::getSideDistance() with getSideDistance();
+  return obstaclesBlockingTheFrontLeft() || obstaclesBlockingTheFrontRight();
 }
 
-static bool LocationManager::obstaclesAreBlockingTheFront(double distanceToMissionSite) {
-  //TODO: replace Enes100Simulation.readDistanceSensor(1) with getFrontDistance();
-  return distanceToMissionSite + Distance::THRESHOLD > Enes100Simulation.readDistanceSensor(1);
+/**
+ * @return whether there are obstacles to the right of the robot blocking the path
+ * to the right of the robot (assuming the robot is facing along the +Y axis)
+ */
+static bool LocationManager::obstaclesBlockingTheFrontRight() {
+  //TODO: replace LocationManager::getSideDistance() with getSideDistance();
+  return Enes100Simulation.readDistanceSensor(2) < Distance::SAFE_FRONT_DISTANCE;
 }
 
-static bool LocationManager::cantMoveInDirectionOfTravel(Direction direction) {
-  if(direction == Direction::UP) {
-     return getFrontY() + OSV::LENGTH > Field::WIDTH;
-  } else {
-     return getBackY() - OSV::LENGTH < 0.;
-  }
+static bool LocationManager::obstaclesBlockingTheFrontLeft() {
+  //TODO: replace LocationManager::getFrontDistance() with getFrontDistance();
+  return Enes100Simulation.readDistanceSensor(0) < Distance::SAFE_FRONT_DISTANCE;
 }
 
 /**

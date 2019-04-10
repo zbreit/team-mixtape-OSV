@@ -16,23 +16,23 @@ double distanceBetween(Coordinate& startPoint, Coordinate& endPoint) {
  */
 bool isBehind(Coordinate& startPoint, Coordinate& endPoint) {
   // Define the component vector for the starting point's orientation
-  printPoint(startPoint, "STARTPOINT");
+//  printPoint(startPoint, "STARTPOINT");
   double startPointX = cos(startPoint.theta);
   double startPointY = sin(startPoint.theta);
   
-  printPoint(Coordinate(startPointX, startPointY), "UNIT VECTOR");
+//  printPoint(Coordinate(startPointX, startPointY), "UNIT VECTOR");
 
   // Now, we find the x and y distance between the endpoint and the start point
   // as the second vector's components
-  printPoint(endPoint, "ENDPOINT");
+//  printPoint(endPoint, "ENDPOINT");
   double endPointX = endPoint.x - startPoint.x;
   double endPointY = endPoint.y - startPoint.y;
-  printPoint(Coordinate(endPointX, endPointY), "END TO START VECTOR");
+//  printPoint(Coordinate(endPointX, endPointY), "END TO START VECTOR");
 
   // Now, if the dot product of the two vectors is negative, the endPoint is behind the startPoint
   double dotProduct = (startPointX * endPointX) + (startPointY * endPointY);
-  Serial.print("DOT PRODUCT: ");
-  Serial.println(dotProduct);
+//  Serial.print("DOT PRODUCT: ");
+//  Serial.println(dotProduct);
   return dotProduct < 0;
 }
 

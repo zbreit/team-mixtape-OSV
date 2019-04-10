@@ -47,24 +47,31 @@ void DriveTrain::turnTo(double angle) {
  * @param distance how far the robot should travel. A positive distance moves
  * the OSV forward and a negative distance moves it backwards.
  */
-void DriveTrain::driveStraight(double distance) {
+bool DriveTrain::driveStraight(double distance) {
     Coordinate currentLocation = LocationManager::getCurrentLocation();
     Coordinate desiredLocation = advance(currentLocation, distance);
     double distanceError = distanceBetween(currentLocation, desiredLocation);
     double speed;
     
+    DriveTrain* driveTrain = instance; // TODO: Remove after simulation
+    
     while(abs(distanceError) > Distance::THRESHOLD) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
       distanceError = distanceBetween(currentLocation, desiredLocation);
-      Serial.print("Distance Error: ");
-      Serial.println(distanceError);
       drive(speed);
+
+      // If you detect an obstacle, return false
+      if(LocationManager::obstaclesBlockingTheFront()) {
+        Serial.println("Found an obstacle dude");
+        driveTrain->stop(); //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
+        return false;
+      }
     }
     Serial.println("DROVE SUCCESSFULLY");
     //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
-    DriveTrain* driveTrain = instance;
     driveTrain->stop();
+    return true;
 }
 
 /**

@@ -4,6 +4,7 @@
 
 // Basic Data Structures
 enum class Direction { UP, DOWN };
+enum class Lane { MIDDLE, RIGHT, LEFT };
 
 // Helper Methods
 double distanceBetween(Coordinate& startPoint, Coordinate& endPoint);

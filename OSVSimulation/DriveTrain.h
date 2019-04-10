@@ -15,7 +15,7 @@ private:
     
 public:
     void turnTo(double angle);
-    void driveStraight(double distance);
+    bool driveStraight(double distance);
     void drive(double speed=1);
     void turn(double speed);
     void stop();
