@@ -1,3 +1,5 @@
+#include <ArduinoSTL.h>
+
 #include <MedianFilter.h>
 #include <SharpDistSensor.h>
 
@@ -12,6 +14,7 @@
 #include "DCMotor.h"
 #include "LocationManager.h"
 #include "Navigator.h"
+#include "ExtinguishingArm.h"
 
 void setup() {
   while(!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_RECEIVER, Pins::WIFI_TRANSMITTER)) {}

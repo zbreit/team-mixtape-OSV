@@ -69,10 +69,10 @@ void Navigator::turnUntilOpening() {
 }
 
 bool Navigator::obstaclesStillInTheWay() {
-  Serial.print("Left Distance: ");
-  Serial.println(Enes100Simulation.readDistanceSensor(0));
-  Serial.print("Right Distance: ");
-  Serial.println(Enes100Simulation.readDistanceSensor(2));
+//  Serial.print("Left Distance: ");
+//  Serial.println(Enes100Simulation.readDistanceSensor(0));
+//  Serial.print("Right Distance: ");
+//  Serial.println(Enes100Simulation.readDistanceSensor(2));
   // TODO: Make more accurate
   return (lane == Lane::MIDDLE)
     ? Enes100Simulation.readDistanceSensor(0) < Distance::ULTRASONIC_MAX_RANGE

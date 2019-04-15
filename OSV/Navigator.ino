@@ -69,10 +69,10 @@ void Navigator::turnUntilOpening() {
 }
 
 bool Navigator::obstaclesStillInTheWay() {
-  Serial.print("Left Distance: ");
-  Serial.println(LocationManager::getFrontLeftDistance());
-  Serial.print("Right Distance: ");
-  Serial.println(LocationManager::getFrontRightDistance());
+//  Serial.print("Left Distance: ");
+//  Serial.println(LocationManager::getFrontLeftDistance());
+//  Serial.print("Right Distance: ");
+//  Serial.println(LocationManager::getFrontRightDistance());
   // TODO: Make more accurate
   return (lane == Lane::MIDDLE)
     ? LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE
