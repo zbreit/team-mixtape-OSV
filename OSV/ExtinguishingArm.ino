@@ -17,7 +17,7 @@ ExtinguishingArm::ExtinguishingArm(pin armMotorPin, pin flameSensorPin) :
 void ExtinguishingArm::extinguish() {
   if(flameSensor.didDetectFlame()) {
     lower();
-    delay(10 * 1000); // TODO: Delay 10 seconds (CHANGE THIS IF UNRELIABLE)
+    delay(5 * 1000); // TODO: Delay 10 seconds (CHANGE THIS IF UNRELIABLE)
     raise();
     flameCount++;
   }

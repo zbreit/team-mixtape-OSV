@@ -13,6 +13,8 @@ Coordinate advance(Coordinate& location, double distance);
 double radiansToDegrees(double angle);
 double getAngularDifference(double startingAngle, double endingAngle);
 double norm(double xComponent, double yComponent);
+float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh);
+
 
 // Debugging Methods
 void printPoint(Coordinate point, String nameOfPoint="Point");

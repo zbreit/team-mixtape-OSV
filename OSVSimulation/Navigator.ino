@@ -39,7 +39,7 @@ void Navigator::driveToMiddleLane() {
 void Navigator::reachMissionSiteX() {
   // Drive straight until an obstacle is encountered
   Serial.println("Horizontally aligning to the mission site...");
-  while(!driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getFrontX())) {
+  while(!driveTrain->driveStraight(Field::OBSTACLE_ENDZONE_X - LocationManager::getBackX())) {
     swapLanes();
   }
   Serial.println("Aligned with the mission site...");
@@ -69,10 +69,6 @@ void Navigator::turnUntilOpening() {
 }
 
 bool Navigator::obstaclesStillInTheWay() {
-//  Serial.print("Left Distance: ");
-//  Serial.println(Enes100Simulation.readDistanceSensor(0));
-//  Serial.print("Right Distance: ");
-//  Serial.println(Enes100Simulation.readDistanceSensor(2));
   // TODO: Make more accurate
   return (lane == Lane::MIDDLE)
     ? Enes100Simulation.readDistanceSensor(0) < Distance::ULTRASONIC_MAX_RANGE
@@ -88,14 +84,11 @@ void Navigator::driveToNextLane() {
 
 void Navigator::goTheDistance() {
   Serial.println("I can find a way....");
-  double heightDifference = LocationManager::getY() - LocationManager::getMissionCenterY();
-  if(abs(heightDifference) > Distance::REACHED_MISSION_SITE) {
-    driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getX());
-    driveTrain->turnTo((heightDifference > 0) ? 270 : 90);
-    driveTrain->driveStraight((heightDifference > 0)
-      ? abs(LocationManager::getBottomY() - LocationManager::getMissionY())
-      : abs(LocationManager::getTopY() - LocationManager::getMissionBottomY()));
-  }
+  //TODO: add in logic based on whether the OSV is above or below the mission
+  driveTrain->turnTo(90);
+  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY() - OSV::WIDTH / 2.);
+  driveTrain->turnTo(0);
+  driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getX());
   Serial.println("I can go the distance!!");
 }
 

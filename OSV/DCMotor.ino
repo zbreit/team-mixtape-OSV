@@ -21,9 +21,13 @@ void DCMotor::set(double speed) {
   int direction = (speed > 0.0) ? HIGH : LOW;
   digitalWrite(directionPin, direction);
 
+  // Map the speed to something between -speedCap and speedCap
+  speed = fmap(speed, -1.0, 1.0, -speedCap, speedCap);
+  speed = constrain(speed, -speedCap, speedCap);
+    
   // Set the speed of the motor
-  int desiredSpeed = abs(speed) * 255 * speedCap;
-  analogWrite(desiredSpeed, speed);
+  speed = abs(speed) * 255;
+  analogWrite(directionPin, speed);
 }
 
 /**

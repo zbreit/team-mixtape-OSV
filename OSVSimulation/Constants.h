@@ -48,6 +48,7 @@ namespace Field {
     extern const double WIDTH;
     extern const double ROCKY_TERRAIN_X;
     extern const double OBSTACLE_LANE_WIDTH;
+    extern const double OBSTACLE_ENDZONE_X; // The x location after which there are guaranteed to be no obstacles
 }
 
 namespace FireSite {

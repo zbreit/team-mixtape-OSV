@@ -84,6 +84,10 @@ double getAngularDifference(double startingAngle, double endAngle) {
   }
 }
 
+float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh) {
+  return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
+}
+
 /**
  * Prints the points x, y and theta to the serial monitor
  */

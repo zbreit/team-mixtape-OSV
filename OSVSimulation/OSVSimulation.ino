@@ -1,3 +1,5 @@
+#include <ArduinoSTL.h>
+
 #include <MedianFilter.h>
 #include <SharpDistSensor.h>
 
@@ -13,6 +15,7 @@
 #include "DCMotor.h"
 #include "LocationManager.h"
 #include "Navigator.h"
+#include "ExtinguishingArm.h"
 
 void setup() {
 	TankSimulation.begin();

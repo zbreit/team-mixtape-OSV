@@ -2,11 +2,13 @@ class ExtinguishingArm {
 private:
   Servo armMotor;
   FlameSensor flameSensor;
+  int flameCount;
+  const int LOW_STATE_ANGLE = 20;
+  const int HIGH_STATE_ANGLE = 0;
+  void lower();
+  void raise();
 public:
-  /**
-   * Create an extinguishing arm
-   * @param armMotorPin the signal pin of the arm servo 
-   * @param flameSensorPin the analog input pin of the flame sensor
-   */
    ExtinguishingArm(pin armMotorPin, pin flameSensorPin);
+   void extinguish();
+   void handleCurrentFlame();
 };

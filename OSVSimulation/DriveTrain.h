@@ -20,7 +20,6 @@ public:
     void turn(double speed);
     void stop();
     static DriveTrain* getInstance();
-
 };
 
 #endif
