@@ -69,4 +69,13 @@ namespace PIDConstants {
     extern const double DRIVE_AT_ANGLE_P; // Proportionality constant for determining angular adjustments on each side
 }
 
+namespace Motors {
+    extern const double LEFT_MIN_COMMAND;
+    extern const double RIGHT_MIN_COMMAND;
+    extern const double LEFT_MAX_COMMAND;
+    extern const double RIGHT_MAX_COMMAND;
+    extern const bool LEFT_IS_REVERSED;
+    extern const bool RIGHT_IS_REVERSED;
+}
+
 #endif

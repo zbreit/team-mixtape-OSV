@@ -4,11 +4,11 @@
  * @param speedPin the pin that controls the motor's speed
  * @param speedCap the fastest speed the OSV can travel. Should be a value between 0.0 and +1.0
  */
-DCMotor::DCMotor(pin directionPin, pin speedPin, double speedCap, double speedFloor, bool isReversed) :
+DCMotor::DCMotor(pin directionPin, pin speedPin, double speedFloor, double speedCap, bool isReversed) :
   directionPin(directionPin),
   speedPin(speedPin),
-  speedCap(speedCap),
   speedFloor(speedFloor),
+  speedCap(speedCap),
   isReversed(isReversed)
 {}
 

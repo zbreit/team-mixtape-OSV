@@ -51,3 +51,11 @@ const int FireSite::SIDE_COUNT = 4;
 const double PIDConstants::TURN_P = 0.05;
 const double PIDConstants::DRIVE_P = 4.;
 const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;
+
+// Motors
+const double Motors::LEFT_MIN_COMMAND = 0.2;
+const double Motors::RIGHT_MIN_COMMAND = 0.2;
+const double Motors::LEFT_MAX_COMMAND = 1.;
+const double Motors::RIGHT_MAX_COMMAND = 1.;
+const bool Motors::LEFT_IS_REVERSED = false;
+const bool Motors::RIGHT_IS_REVERSED = false;

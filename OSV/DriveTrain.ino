@@ -4,8 +4,8 @@ DriveTrain* DriveTrain::instance = 0;
  * Creates a new DriveTrain
  */
 DriveTrain::DriveTrain() :
-  leftMotor(Pins::LEFT_MOTOR_DIR, Pins::LEFT_MOTOR_PWM),
-  rightMotor(Pins::RIGHT_MOTOR_DIR, Pins::RIGHT_MOTOR_PWM)
+  leftMotor(Pins::LEFT_MOTOR_DIR, Pins::LEFT_MOTOR_PWM, Motors::LEFT_MIN_COMMAND, Motors::LEFT_MAX_COMMAND, Motors::LEFT_IS_REVERSED),
+  rightMotor(Pins::RIGHT_MOTOR_DIR, Pins::RIGHT_MOTOR_PWM, Motors::RIGHT_MIN_COMMAND, Motors::RIGHT_MAX_COMMAND, Motors::RIGHT_IS_REVERSED)
 {}
 
 /**
