@@ -14,7 +14,8 @@ double radiansToDegrees(double angle);
 double getAngularDifference(double startingAngle, double endingAngle);
 double norm(double xComponent, double yComponent);
 float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh);
-
+void sendFlameCount(int numberOfFlames);
+int invertState(int state);
 
 // Debugging Methods
 void printPoint(Coordinate point, String nameOfPoint="Point");

@@ -5,6 +5,10 @@ class Navigator {
 private:
   static Navigator* instance;
   DriveTrain* driveTrain;
+  ExtinguishingArm* extinguishingArm;
+  Lane lane;
+
+  // Navigating to Mission Site
   void driveToMiddleLane();
   void driveOverRockyTerrain();
   void driveToLane(Lane newLane);
@@ -14,10 +18,11 @@ private:
   bool obstaclesStillInTheWay();
   void turnUntilOpening();
   void goTheDistance();
+  
   Navigator();
-  Lane lane;
 public:
   void navigate();
+  void countAndExtinguishFlames();
   static Navigator* getInstance();
 };
 

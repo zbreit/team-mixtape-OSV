@@ -3,8 +3,8 @@
  *   STATIC MEMBER SETUP
  * =======================
  */
-const NewPing LocationManager::frontRightSensor(Pins::ULTRASONIC, Pins::ULTRASONIC);
-const SharpDistSensor LocationManager::frontLeftSensor(Pins::IR_DISTANCE, Distance::SAMPLE_NUMBER);
+const NewPing LocationManager::frontRightSensor(Pins::RIGHT_ULTRASONIC_TRIGGER, Pins::RIGHT_ULTRASONIC_ECHO);
+const NewPing LocationManager::frontLeftSensor(Pins::LEFT_ULTRASONIC_TRIGGER, Pins::LEFT_ULTRASONIC_ECHO);
 Coordinate* LocationManager::MISSION_LOCATION = 0;
 
 /**
@@ -90,12 +90,38 @@ static double LocationManager::getBottomY() {
  * @return the angular heading of the OSV, scaled between 0 and 360 degrees.
  */
 static double LocationManager::getHeading() {
-  double theta = getCurrentLocation().theta;
-  return (theta >= 0)
-    ? radiansToDegrees(theta)
-    : 360 + radiansToDegrees(theta);
+  return getHeading(getCurrentLocation().theta);
 }
 
+/**
+ * Determines the heading of the OSV given a theta value directly from the vision system
+ * @param rawThetaVal the heading of the OSV, scaled between -PI and PI radians.
+ * @return the angular heading of the OSV, scaled between 0 and 360 degrees.
+ */
+static double LocationManager::getHeading(double rawThetaValue) {
+  return (rawThetaValue >= 0)
+    ? radiansToDegrees(rawThetaValue)
+    : 360 + radiansToDegrees(rawThetaValue);
+}
+
+/**
+ * @return the heading of the OSV to the closest 90 degree increment
+ */
+static double LocationManager::getRoundedHeading() {
+  double heading = getHeading();
+
+  if(heading > 45. && heading <= 135.) {
+    // If the angle is between 45 and 135, return 90
+    return 90.;
+  } else if(heading > 135. && heading <= 225.) {
+    // If the angle is between 135 and 135, return 180
+    return 180.;
+  } else if(heading > 225. && heading <= 315.) {
+    return 270.;
+  } else {
+    return 0.;
+  }
+}
 
 /**
  * ========================
@@ -107,16 +133,19 @@ static double LocationManager::getHeading() {
  * @return the distance retreived by the left front distance sensor, in meters
  */
 static double LocationManager::getFrontLeftDistance() {
-    frontLeftSensor.setModel(SharpDistSensor::GP2Y0A41SK0F_5V_DS);
-    return frontLeftSensor.getDist() / 1000.;
+    return getDistance(frontLeftSensor);
 }
 
 /**
  * @return the distance retreived by the right front distance sensor, in meters
  */
 static double LocationManager::getFrontRightDistance() {
-    unsigned int medianTimePerPing = frontRightSensor.ping_median(Distance::SAMPLE_NUMBER);
-    return frontRightSensor.convert_cm(medianTimePerPing);
+    return getDistance(frontRightSensor);
+}
+
+static double LocationManager::getDistance(const NewPing& sensor) {
+    unsigned int medianTimePerPing = sensor.ping_median(Distance::SAMPLE_NUMBER);
+    return sensor.convert_cm(medianTimePerPing);
 }
 
 /**

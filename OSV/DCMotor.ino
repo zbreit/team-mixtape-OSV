@@ -4,10 +4,12 @@
  * @param speedPin the pin that controls the motor's speed
  * @param speedCap the fastest speed the OSV can travel. Should be a value between 0.0 and +1.0
  */
-DCMotor::DCMotor(pin directionPin, pin speedPin, double speedCap) :
+DCMotor::DCMotor(pin directionPin, pin speedPin, double speedCap, double speedFloor, bool isReversed) :
   directionPin(directionPin),
   speedPin(speedPin),
-  speedCap(speedCap)
+  speedCap(speedCap),
+  speedFloor(speedFloor),
+  isReversed(isReversed)
 {}
 
 /**
@@ -19,14 +21,17 @@ DCMotor::DCMotor(pin directionPin, pin speedPin, double speedCap) :
 void DCMotor::set(double speed) {
   // Turn on the direction pin if the motor is driving forward, and set it to 0 otherwise
   int direction = (speed > 0.0) ? HIGH : LOW;
+  direction = isReversed ? invertState(direction) : direction; // If the motor should be reversed, swap the direction
+  
   digitalWrite(directionPin, direction);
 
-  // Map the speed to something between -speedCap and speedCap
-  speed = fmap(speed, -1.0, 1.0, -speedCap, speedCap);
-  speed = constrain(speed, -speedCap, speedCap);
+  // Map the speed to something between speedFloor and speedCap
+  speed = abs(speed);
+  speed = fmap(speed, 0, 1.0, speedFloor, speedCap);
+  speed = constrain(speed, speedFloor, speedCap);
     
   // Set the speed of the motor
-  speed = abs(speed) * 255;
+  speed *= 255;
   analogWrite(directionPin, speed);
 }
 

@@ -10,5 +10,5 @@ private:
 public:
    ExtinguishingArm(pin armMotorPin, pin flameSensorPin);
    void extinguish();
-   void handleCurrentFlame();
+   void reportFlameCount();
 };

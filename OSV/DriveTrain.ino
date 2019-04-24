@@ -48,6 +48,19 @@ void DriveTrain::turnTo(double angle) {
  * the OSV forward and a negative distance moves it backwards.
  */
 bool DriveTrain::driveStraight(double distance) {
+    return driveStraight(distance, LocationManager::getRoundedHeading());
+}
+
+/**
+ * Drives the robot straight for the specified distance
+ * @param distance how far the robot should travel. A positive distance moves
+ * the OSV forward and a negative distance moves it backwards.
+ * @param angleToMaintain the angle at which the OSV should stay while driving forward
+ * @return whether or not the OSV traveled the given distance without hitting any obstacles
+ */
+bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
+    Serial.print("Maintain Angle: ");
+    Serial.println(angleToMaintain);
     Coordinate currentLocation = LocationManager::getCurrentLocation();
     Coordinate desiredLocation = advance(currentLocation, distance);
     double distanceError = distanceBetween(currentLocation, desiredLocation);
@@ -59,7 +72,8 @@ bool DriveTrain::driveStraight(double distance) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
       distanceError = distanceBetween(currentLocation, desiredLocation);
-      drive(speed);
+      smartDrive(speed, 
+        getAngularDifference(angleToMaintain, LocationManager::getHeading(currentLocation.theta)));
 
       // If you detect an obstacle, return false
       if(LocationManager::obstaclesBlockingTheFront()) {
@@ -76,13 +90,19 @@ bool DriveTrain::driveStraight(double distance) {
 
 /**
  * TODO: determine if this should be private
- * Drives the robot at a given speed
+ * Drives the robot at a given speed, adding slight adjustments to both sides based on the angular error
  * @param speed the desired speed, where -1 is full speed backwards and  
  * +1 is full speed forwards
+ * @param angularError the distance, in degrees, between the current and desired heading for the OSV
+ * +1 is full speed forwards
  */
-void DriveTrain::drive(double speed) {
-  // TODO: This argument SHOULD be replaced with just 'speed' when simulation testing is over
-  setBothSidesTo(speed * 255);
+void DriveTrain::smartDrive(double speed, double angularError) {
+  Serial.print("Angular Error");
+  Serial.println(angularError);
+  double angleSpeedAdjustment = angularError * PIDConstants::DRIVE_AT_ANGLE_P;
+  // TODO: These arguments SHOULD be replaced with just 'speed' when simulation testing is over
+  leftMotor.set(speed * 255 + angleSpeedAdjustment);
+  rightMotor.set(speed * 255 - angleSpeedAdjustment);
 }
 
 /**
@@ -103,15 +123,4 @@ void DriveTrain::turn(double speed) {
 void DriveTrain::stop() {
   leftMotor.stop();
   rightMotor.stop();
-}
-
-/**
- * Sets both sides of the drive train to a desired speed. +1.0 is full-speed forward 
- * and -1.0 is full-speed backwards.
- * @param speed the desired speed of the robot, specified as a decimal
- * between -1.0 and 1.0
- */
-void DriveTrain::setBothSidesTo(double speed) {
-  leftMotor.set(speed);
-  rightMotor.set(speed);
 }

@@ -44,6 +44,13 @@ double norm(double xComponent, double yComponent) {
 }
 
 /**
+ * @return HIGH if the current state is LOW, LOW if the current state is HIGH
+ */
+int invertState(int state) {
+  return (state == HIGH) ? LOW : HIGH;
+}
+
+/**
  * Returns a new coordinate that extends the given location vector
  * by the distance
  * @param location a vector representing a given position

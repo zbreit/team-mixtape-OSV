@@ -6,16 +6,19 @@ private:
   LocationManager() {}
   static Coordinate* MISSION_LOCATION;
   static const NewPing frontRightSensor;
-  static const SharpDistSensor frontLeftSensor;
+  static const NewPing frontLeftSensor;
   static void waitForLocationUpdate();
   static Coordinate* getMissionLocation();
+  static double getDistance(const NewPing& sensor);
 public:
 
   // OSV Vision system info
   static Coordinate getCurrentLocation();
   static double getX();
   static double getY();
+  static double getHeading(double rawThetaValue);
   static double getHeading();
+  static double getRoundedHeading();
   static double getFrontX();
   static double getTopY();
   static double getBottomY();

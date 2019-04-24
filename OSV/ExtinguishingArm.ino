@@ -17,10 +17,18 @@ ExtinguishingArm::ExtinguishingArm(pin armMotorPin, pin flameSensorPin) :
 void ExtinguishingArm::extinguish() {
   if(flameSensor.didDetectFlame()) {
     lower();
-    delay(5 * 1000); // TODO: Delay 10 seconds (CHANGE THIS IF UNRELIABLE)
+    delay(5000); // TODO: Delay 5 seconds (CHANGE THIS IF UNRELIABLE)
     raise();
     flameCount++;
   }
+}
+
+/**
+ * Sends the current flame count to the vision system. 
+ * PRECONDITION: Should only be used after counting all flames
+ */
+void ExtinguishingArm::reportFlameCount() {
+  Enes100.mission(flameCount);
 }
 
 /**

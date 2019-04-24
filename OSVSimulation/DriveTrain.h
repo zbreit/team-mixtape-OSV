@@ -10,13 +10,11 @@ private:
     DCMotor rightMotor;
     DriveTrain();
     
-    /* Private convenience methods */
-    void setBothSidesTo(double speed);
-    
 public:
     void turnTo(double angle);
     bool driveStraight(double distance);
-    void drive(double speed=1);
+    bool driveStraight(double distance, double angleToMaintain);
+    void smartDrive(double speed, double angleToMaintain);
     void turn(double speed);
     void stop();
     static DriveTrain* getInstance();

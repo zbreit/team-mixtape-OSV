@@ -6,7 +6,10 @@ typedef unsigned char byte;
 
 namespace Pins {
     // Digital IO
-    extern const pin ULTRASONIC;
+    extern const pin LEFT_ULTRASONIC_ECHO;
+    extern const pin LEFT_ULTRASONIC_TRIGGER;
+    extern const pin RIGHT_ULTRASONIC_ECHO;
+    extern const pin RIGHT_ULTRASONIC_TRIGGER;
 
     // Motors
     extern const pin RIGHT_MOTOR_PWM;
@@ -18,7 +21,6 @@ namespace Pins {
     // Analog Input
     extern const pin IR_FLAME_SENSOR;
     extern const pin ARM_MOTOR_POS;
-    extern const pin IR_DISTANCE;
 
     // WIFI
     extern const pin WIFI_TRANSMITTER;
@@ -40,6 +42,7 @@ namespace OSV {
     extern const double LENGTH;
     extern const double WIDTH;
     extern const int ARUCO_MARKER_ID;
+    extern const double ARM_EXTENSION_LENGTH;
 }
 
 namespace Field {
@@ -54,11 +57,16 @@ namespace Field {
 namespace FireSite {
     // Fire Site Dimensions
     extern const double RADIUS;
+    extern const double EDGE_TO_CANDLE;
+    extern const double CANDLE_TO_CANDLE;
+    extern const double CANDLE_INSET;
+    extern const int SIDE_COUNT;
 }
 
 namespace PIDConstants {
     extern const double TURN_P; // Proportionality constant for turning
     extern const double DRIVE_P;
+    extern const double DRIVE_AT_ANGLE_P; // Proportionality constant for determining angular adjustments on each side
 }
 
 #endif

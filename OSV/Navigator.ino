@@ -53,7 +53,7 @@ void Navigator::swapLanes() {
   if(lane == Lane::MIDDLE) {
     lane = Lane::RIGHT;
   } else {
-    lane = Lane::RIGHT;
+    lane = Lane::MIDDLE;
   }
   Serial.println("Swapped Lanes!!");
 }
@@ -77,7 +77,8 @@ bool Navigator::obstaclesStillInTheWay() {
 
 void Navigator::driveToNextLane() {
   Serial.println("Driving to next lane...");
-  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(LocationManager::getCurrentLocation().theta))); // TODO: Compute actual required distance
+  double headingInRadians = LocationManager::getCurrentLocation().theta;
+  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(headingInRadians)), LocationManager::getHeading(headingInRadians)); // TODO: Compute actual required distance
   driveTrain->turnTo(0);
   Serial.println("Drove to next lane!!!");
 }
@@ -86,16 +87,52 @@ void Navigator::goTheDistance() {
   Serial.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY());// - OSV::WIDTH / 2.);
+  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY() - OSV::WIDTH + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(0);
-  driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getX());
+  driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getX() + FireSite::EDGE_TO_CANDLE);
   Serial.println("I can go the distance!!");
 }
 
+
 /**
- * ============================
- *   Creating Navigator Logic
- * ============================
+ * ===========================
+ *   Mission Navigation Code 
+ * ===========================
+ */
+void Navigator::countAndExtinguishFlames() {
+  Serial.println("Counting and extinguishing flames...");
+
+  // The angle to which you need to rotate on each cycle around the fire site
+  int angleList[] = { 270, 180, 90, 0 };
+
+  // Go through every side of the fire site
+  for(int sideNum = 0; sideNum < FireSite::SIDE_COUNT; sideNum++) {
+    // Drive to and possibly extinguish the first candle
+    driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE);
+    extinguishingArm->extinguish();
+    
+    // Drive to and possibly extinguish the second candle
+    driveTrain->driveStraight(FireSite::CANDLE_TO_CANDLE);
+    extinguishingArm->extinguish();
+
+    // Prepare for the next side
+    driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + (OSV::LENGTH - OSV::WIDTH) / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+    driveTrain->turnTo(angleList[sideNum]);
+  }
+
+  // Extinguish and count center flame
+  driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getX());
+  extinguishingArm->extinguish();
+
+  extinguishingArm->reportFlameCount();
+  Serial.println("Counted and extinguished flames...");
+}
+ 
+
+/**
+ * ===============================
+ *   Logic to Create a Navigator 
+ * ===============================
  */
 
 /**
@@ -104,6 +141,7 @@ void Navigator::goTheDistance() {
 Navigator::Navigator() {
   driveTrain = DriveTrain::getInstance();
   lane = Lane::MIDDLE;
+  extinguishingArm = &ExtinguishingArm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
 }
 
 // Start off the Navigator instance as null
