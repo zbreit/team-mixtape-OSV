@@ -25,8 +25,8 @@ DriveTrain* DriveTrain::getInstance() {
  * The angle must be in the range [0, 360]
  */
 void DriveTrain::turnTo(double angle) {
-  Serial.print("Turning to ");
-  Serial.println(angle);
+  Enes100.print("Turning to ");
+  Enes100.println(angle);
   double angularError = getAngularDifference(LocationManager::getHeading(), angle);
   double speed;
   
@@ -35,11 +35,9 @@ void DriveTrain::turnTo(double angle) {
     turn(speed);
     angularError = getAngularDifference(LocationManager::getHeading(), angle);
   }
-  Serial.print("Reached ");
-  Serial.println(angle);
-  //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
-  DriveTrain* driveTrain = instance;
-  driveTrain->stop();
+  Enes100.print("Reached ");
+  Enes100.println(angle);
+  stop();
 }
 
 /**
@@ -59,15 +57,12 @@ bool DriveTrain::driveStraight(double distance) {
  * @return whether or not the OSV traveled the given distance without hitting any obstacles
  */
 bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
-    Serial.print("Maintain Angle: ");
-    Serial.println(angleToMaintain);
+    Enes100.print("Maintain Angle: ");
+    Enes100.println(angleToMaintain);
     Coordinate currentLocation = LocationManager::getCurrentLocation();
     Coordinate desiredLocation = advance(currentLocation, distance);
     double distanceError = distanceBetween(currentLocation, desiredLocation);
     double speed;
-    
-    DriveTrain* driveTrain = instance; // TODO: Remove after simulation
-    
     while(abs(distanceError) > Distance::THRESHOLD) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
@@ -77,14 +72,13 @@ bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
 
       // If you detect an obstacle, return false
       if(LocationManager::obstaclesBlockingTheFront()) {
-        Serial.println("Found an obstacle dude");
-        driveTrain->stop(); //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
+        Enes100.println("Found an obstacle dude");
+        stop();
         return false;
       }
     }
-    Serial.println("DROVE SUCCESSFULLY");
-    //TODO: REPLACE WITH JUST STOP() AFTER FINISHING SIMULATION
-    driveTrain->stop();
+    Enes100.println("DROVE SUCCESSFULLY");
+    stop();
     return true;
 }
 
@@ -97,12 +91,11 @@ bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
  * +1 is full speed forwards
  */
 void DriveTrain::smartDrive(double speed, double angularError) {
-  Serial.print("Angular Error");
-  Serial.println(angularError);
+  Enes100.print("Angular Error");
+  Enes100.println(angularError);
   double angleSpeedAdjustment = angularError * PIDConstants::DRIVE_AT_ANGLE_P;
-  // TODO: These arguments SHOULD be replaced with just 'speed' when simulation testing is over
-  leftMotor.set(speed * 255 + angleSpeedAdjustment);
-  rightMotor.set(speed * 255 - angleSpeedAdjustment);
+  leftMotor.set(speed + angleSpeedAdjustment);
+  rightMotor.set(speed - angleSpeedAdjustment);
 }
 
 /**
@@ -112,9 +105,8 @@ void DriveTrain::smartDrive(double speed, double angularError) {
  * +1 is full speed left
  */
 void DriveTrain::turn(double speed) {
-  // TODO: These arguments SHOULD be replaced with just 'speed' when simulation testing is over
-  rightMotor.set(speed * 255);
-  leftMotor.set(-speed * 255);
+  rightMotor.set(speed);
+  leftMotor.set(-speed);
 }
 
 /**

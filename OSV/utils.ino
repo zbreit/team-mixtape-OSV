@@ -31,8 +31,8 @@ bool isBehind(Coordinate& startPoint, Coordinate& endPoint) {
 
   // Now, if the dot product of the two vectors is negative, the endPoint is behind the startPoint
   double dotProduct = (startPointX * endPointX) + (startPointY * endPointY);
-//  Serial.print("DOT PRODUCT: ");
-//  Serial.println(dotProduct);
+//  Enes100.print("DOT PRODUCT: ");
+//  Enes100.println(dotProduct);
   return dotProduct < 0;
 }
 
@@ -99,13 +99,13 @@ float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh
  * Prints the points x, y and theta to the serial monitor
  */
 void printPoint(Coordinate point, String nameOfPoint) {
-  Serial.print(nameOfPoint);
-  Serial.print(": (");
-  Serial.print(point.x);
-  Serial.print(", ");
-  Serial.print(point.y);
-  Serial.print(", ");
-  Serial.print(point.theta);
-  Serial.println(")");
+  Enes100.print(&nameOfPoint);
+  Enes100.print(": (");
+  Enes100.print(point.x);
+  Enes100.print(", ");
+  Enes100.print(point.y);
+  Enes100.print(", ");
+  Enes100.print(point.theta);
+  Enes100.println(")");
 }
  

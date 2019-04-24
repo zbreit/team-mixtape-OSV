@@ -18,19 +18,19 @@ void Navigator::navigate() {
  * From a random starting location in the landing zone, drive the robot a little bit the rocky terrain
  */
 void Navigator::driveOverRockyTerrain() {
-  Serial.println("Navigating across rocky terrain");
+  Enes100.println("Navigating across rocky terrain");
   driveToMiddleLane();
   driveTrain->turnTo(0);
   driveTrain->driveStraight(Field::ROCKY_TERRAIN_X - LocationManager::getBackX());
-  Serial.println("Crossed rocky terrain!!");
+  Enes100.println("Crossed rocky terrain!!");
 }
 
 void Navigator::driveToMiddleLane() {
-  Serial.println("Navigating to the middle lane");
+  Enes100.println("Navigating to the middle lane");
   lane = Lane::MIDDLE;
   driveTrain->turnTo(90);
   driveTrain->driveStraight(Field::WIDTH / 2 - LocationManager::getY());
-  Serial.println("Reached the middle lane!!");
+  Enes100.println("Reached the middle lane!!");
 }
 
 /**
@@ -38,15 +38,15 @@ void Navigator::driveToMiddleLane() {
  */
 void Navigator::reachMissionSiteX() {
   // Drive straight until an obstacle is encountered
-  Serial.println("Horizontally aligning to the mission site...");
+  Enes100.println("Horizontally aligning to the mission site...");
   while(!driveTrain->driveStraight(Field::OBSTACLE_ENDZONE_X - LocationManager::getBackX())) {
     swapLanes();
   }
-  Serial.println("Aligned with the mission site...");
+  Enes100.println("Aligned with the mission site...");
 }
 
 void Navigator::swapLanes() {
-  Serial.println("Swapping Lanes...");
+  Enes100.println("Swapping Lanes...");
   turnUntilOpening();
   driveToNextLane();
   
@@ -55,17 +55,17 @@ void Navigator::swapLanes() {
   } else {
     lane = Lane::MIDDLE;
   }
-  Serial.println("Swapped Lanes!!");
+  Enes100.println("Swapped Lanes!!");
 }
 
 void Navigator::turnUntilOpening() {
-  Serial.println("Turning until an opening...");
+  Enes100.println("Turning until an opening...");
   double turnSpeed = (lane == Lane::MIDDLE) ? -0.5 : 0.5;
   
   driveTrain->turn(turnSpeed);
   while(obstaclesStillInTheWay()) {delay(200);}
   driveTrain->stop();
-  Serial.println("Found an opening!!");
+  Enes100.println("Found an opening!!");
 }
 
 bool Navigator::obstaclesStillInTheWay() {
@@ -76,21 +76,21 @@ bool Navigator::obstaclesStillInTheWay() {
 }
 
 void Navigator::driveToNextLane() {
-  Serial.println("Driving to next lane...");
+  Enes100.println("Driving to next lane...");
   double headingInRadians = LocationManager::getCurrentLocation().theta;
-  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(headingInRadians)), LocationManager::getHeading(headingInRadians)); // TODO: Compute actual required distance
+  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(headingInRadians)), LocationManager::getHeading(headingInRadians));
   driveTrain->turnTo(0);
-  Serial.println("Drove to next lane!!!");
+  Enes100.println("Drove to next lane!!!");
 }
 
 void Navigator::goTheDistance() {
-  Serial.println("I can find a way....");
+  Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
   driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY() - OSV::WIDTH + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(0);
   driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getX() + FireSite::EDGE_TO_CANDLE);
-  Serial.println("I can go the distance!!");
+  Enes100.println("I can go the distance!!");
 }
 
 
@@ -100,7 +100,7 @@ void Navigator::goTheDistance() {
  * ===========================
  */
 void Navigator::countAndExtinguishFlames() {
-  Serial.println("Counting and extinguishing flames...");
+  Enes100.println("Counting and extinguishing flames...");
 
   // The angle to which you need to rotate on each cycle around the fire site
   int angleList[] = { 270, 180, 90, 0 };
@@ -125,7 +125,7 @@ void Navigator::countAndExtinguishFlames() {
   extinguishingArm->extinguish();
 
   extinguishingArm->reportFlameCount();
-  Serial.println("Counted and extinguished flames...");
+  Enes100.println("Counted and extinguished flames...");
 }
  
 

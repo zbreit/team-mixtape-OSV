@@ -50,4 +50,4 @@ const int FireSite::SIDE_COUNT = 4;
 // PID Constants
 const double PIDConstants::TURN_P = 0.05;
 const double PIDConstants::DRIVE_P = 4.;
-const double PIDConstants::DRIVE_AT_ANGLE_P = 4.; //TODO: change
+const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;

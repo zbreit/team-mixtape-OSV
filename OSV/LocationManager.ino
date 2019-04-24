@@ -153,7 +153,6 @@ static double LocationManager::getDistance(const NewPing& sensor) {
  * to the right of the robot (assuming the robot is facing along the +Y axis)
  */
 static bool LocationManager::obstaclesBlockingTheFront() {
-  //TODO: replace LocationManager::getSideDistance() with getSideDistance();
   return obstaclesBlockingTheFrontLeft() || obstaclesBlockingTheFrontRight();
 }
 
@@ -162,13 +161,11 @@ static bool LocationManager::obstaclesBlockingTheFront() {
  * to the right of the robot (assuming the robot is facing along the +Y axis)
  */
 static bool LocationManager::obstaclesBlockingTheFrontRight() {
-  //TODO: replace LocationManager::getSideDistance() with getSideDistance();
-  return LocationManager::getFrontRightDistance() < Distance::SAFE_FRONT_DISTANCE;
+  return getFrontRightDistance() < Distance::SAFE_FRONT_DISTANCE;
 }
 
 static bool LocationManager::obstaclesBlockingTheFrontLeft() {
-  //TODO: replace LocationManager::getFrontDistance() with getFrontDistance();
-  return LocationManager::getFrontLeftDistance() < Distance::SAFE_FRONT_DISTANCE;
+  return getFrontLeftDistance() < Distance::SAFE_FRONT_DISTANCE;
 }
 
 /**

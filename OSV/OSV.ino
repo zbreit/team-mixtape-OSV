@@ -13,7 +13,10 @@
 #include "Navigator.h"
 
 void setup() {
-  while(!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_RECEIVER, Pins::WIFI_TRANSMITTER)) {}
+  while(!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_RECEIVER, Pins::WIFI_TRANSMITTER)) {
+    Enes100.println("Connecting to vision system...");
+  }
+  Enes100.println("Connected!!!");
   Navigator* navigator = Navigator::getInstance();
   navigator->navigate();
   navigator->countAndExtinguishFlames();
