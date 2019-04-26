@@ -158,8 +158,8 @@ void DriveTrain::stop() {
  * Turns on all PID controllers  control the functionality to drive straight and sets all related output and input values to 0
  */
 void DriveTrain::setUpDriveStraightPIDControllers() {
-  drivePID.SetMode(MANUAL);
-  straightenerPID.SetMode(MANUAL);
+  drivePID.SetMode(AUTOMATIC);
+  straightenerPID.SetMode(AUTOMATIC);
   currentDistanceError = 0;
   currentHeadingError = 0;
   calculatedStraightSpeed = 0;
@@ -170,8 +170,8 @@ void DriveTrain::setUpDriveStraightPIDControllers() {
  * Turns off all PID controllers that control the functionality to drive straight
  */
 void DriveTrain::tearDownDriveStraightPIDControllers() {
-  drivePID.SetMode(AUTOMATIC);
-  straightenerPID.SetMode(AUTOMATIC);
+  drivePID.SetMode(MANUAL);
+  straightenerPID.SetMode(MANUAL);
 
 }
 
@@ -179,7 +179,7 @@ void DriveTrain::tearDownDriveStraightPIDControllers() {
  * Turns off all turn-related PID controllers and sets all output and input values to 0
  */
 void DriveTrain::setUpTurnPIDController() {
-  turnPID.SetMode(MANUAL);
+  turnPID.SetMode(AUTOMATIC);
   calculatedStraightSpeed = 0;
   calculatedTurnSpeed = 0;
 }
@@ -188,5 +188,5 @@ void DriveTrain::setUpTurnPIDController() {
  * Turns off all turn-related PID controllers
  */
 void DriveTrain::tearDownTurnPIDController() {
-  turnPID.SetMode(AUTOMATIC);
+  turnPID.SetMode(MANUAL);
 }
