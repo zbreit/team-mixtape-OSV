@@ -15,3 +15,5 @@ All of the OSV logic is stored in the `OSV/` directory. The `OSVSimulation/` dir
    - `DriveTrain`: Provides high-level control for the OSV's locomotion
    - `ExtinguishingArm`: Provides high-level control of the OSV's arm. 
    - `Navigator`: Contains all obstacle and mission navigation functionality
+ - **The Important File**
+   - `OSV.ino`: The main code file. Contains `void setup()` and `void loop()`
