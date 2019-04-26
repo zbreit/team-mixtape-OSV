@@ -26,6 +26,7 @@ const double Distance::REACHED_MISSION_SITE = 0.15; // The maximum difference be
 
 // Angles
 const double Angle::EQUALITY_THRESHOLD = 0.25; // The angular difference between 2 angles, in degrees, at which they are considred equal
+const double Angle::LANE_SHIFT = atan(Field::OBSTACLE_LANE_WIDTH / Distance::SAFE_FRONT_DISTANCE); // Angle to shift between the lanes
 
 // Analog Input
 const pin Pins::ARM_MOTOR_POS = A0;

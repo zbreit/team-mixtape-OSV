@@ -28,6 +28,7 @@ namespace Pins {
 }
 
 namespace Distance {
+  // Ultrasonic/Other Distance Information
   extern const byte SAMPLE_NUMBER;
   extern const double EQUALITY_THRESHOLD;
   extern const double OBSTACLE_PRESENT;
@@ -38,7 +39,9 @@ namespace Distance {
 }
 
 namespace Angle {
+  // Angle Information
   extern const double EQUALITY_THRESHOLD;
+  extern const double LANE_SHIFT;
 }
 
 namespace OSV {

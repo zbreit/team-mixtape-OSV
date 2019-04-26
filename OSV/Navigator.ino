@@ -59,7 +59,9 @@ void Navigator::swapLanes() {
 
 void Navigator::turnUntilOpening() {
   Enes100.println("Turning until an opening...");
-  driveTrain->turnTo((lane == Lane::MIDDLE) ? 315. : 45.);
+  driveTrain->turnTo((lane == Lane::MIDDLE)
+    ? 360 - Angle::LANE_SHIFT
+    : Angle::LANE_SHIFT);
   Enes100.println("Found an opening!!");
 }
 
