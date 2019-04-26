@@ -24,6 +24,9 @@ void Navigator::prepareToCrossRockyTerrain() {
   Enes100.println("Crossed rocky terrain!!");
 }
 
+/**
+ * From the landing zone, drive the robot to the middle obstacle lane
+ */
 void Navigator::driveToMiddleLane() {
   Enes100.println("Navigating to the middle lane");
   lane = Lane::MIDDLE;
@@ -44,6 +47,10 @@ void Navigator::reachMissionSiteX() {
   Enes100.println("Aligned with the mission site...");
 }
 
+/**
+ * Move the OSV from the middle lane to the right lane or from the right lane to the middle lane,
+ * depending on the current location of the OSV
+ */
 void Navigator::swapLanes() {
   Enes100.println("Swapping Lanes...");
   turnUntilOpening();
@@ -57,6 +64,9 @@ void Navigator::swapLanes() {
   Enes100.println("Swapped Lanes!!");
 }
 
+/**
+ * Turn the robot until it is facing towards a gap in the obstacles
+ */
 void Navigator::turnUntilOpening() {
   Enes100.println("Turning until an opening...");
   driveTrain->turnTo((lane == Lane::MIDDLE)
@@ -65,13 +75,18 @@ void Navigator::turnUntilOpening() {
   Enes100.println("Found an opening!!");
 }
 
+/**
+ * DEPRECATED: Used in old version of the turnUntilOpening() method
+ * Returns whether any obstacles are still in front of the OSV
+ */
 bool Navigator::obstaclesStillInTheWay() {
   // TODO: Make more accurate
-  return (lane == Lane::MIDDLE)
-    ? LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE
-    : LocationManager::getFrontRightDistance() < Distance::IR_MAX_RANGE;
+  return LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE
 }
 
+/**
+ * Drive between the gaps in obstacles to the next lane
+ */
 void Navigator::driveToNextLane() {
   Enes100.println("Driving to next lane...");
   double headingInRadians = LocationManager::getCurrentLocation().theta;
@@ -80,6 +95,9 @@ void Navigator::driveToNextLane() {
   Enes100.println("Drove to next lane!!!");
 }
 
+/**
+ * After the OSV crosses the obstacles, orient the OSV so that it is ready to detect the first candle
+ */
 void Navigator::goTheDistance() {
   Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
@@ -95,6 +113,10 @@ void Navigator::goTheDistance() {
  * ===========================
  *   Mission Navigation Code 
  * ===========================
+ */
+
+/**
+ * Goes around the fire pedestal, and counts/extinguishes all flames
  */
 void Navigator::countAndExtinguishFlames() {
   Enes100.println("Counting and extinguishing flames...");
