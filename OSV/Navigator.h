@@ -10,7 +10,7 @@ private:
 
   // Navigating to Mission Site
   void driveToMiddleLane();
-  void driveOverRockyTerrain();
+  void prepareToCrossRockyTerrain();
   void driveToLane(Lane newLane);
   void reachMissionSiteX();
   void swapLanes();

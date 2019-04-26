@@ -30,7 +30,7 @@ void DriveTrain::turnTo(double angle) {
   double angularError = getAngularDifference(LocationManager::getHeading(), angle);
   double speed;
   
-  while(abs(angularError) > 0.5) {
+  while(abs(angularError) > Angle::EQUALITY_THRESHOLD) {
     speed = angularError * PIDConstants::TURN_P;
     turn(speed);
     angularError = getAngularDifference(LocationManager::getHeading(), angle);
@@ -63,7 +63,7 @@ bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
     Coordinate desiredLocation = advance(currentLocation, distance);
     double distanceError = distanceBetween(currentLocation, desiredLocation);
     double speed;
-    while(abs(distanceError) > Distance::THRESHOLD) {
+    while(abs(distanceError) > Distance::EQUALITY_THRESHOLD) {
       speed = distanceError * PIDConstants::DRIVE_P;
       currentLocation = LocationManager::getCurrentLocation();
       distanceError = distanceBetween(currentLocation, desiredLocation);

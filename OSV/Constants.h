@@ -28,13 +28,17 @@ namespace Pins {
 }
 
 namespace Distance {
-  extern const byte SAMPLE_NUMBER; // The number of distance measurements to take before returning the median
-  extern const double THRESHOLD; // The distance, in meters, for when two positions are considered equal
-  extern const double OBSTACLE_PRESENT; // The distance, in meters, for when an obstacle is in the way
-  extern const double SAFE_FRONT_DISTANCE; // The distance, in meters, where it is safe to have an obstacle present
-  extern const double REACHED_MISSION_SITE; // The maximum difference between the OSV and the mission site positions after avoiding all obstacles
-  extern const double ULTRASONIC_MAX_RANGE; // The maximum discernible distance of the ultrasonic, in meters
-  extern const double IR_MAX_RANGE; // The maximum discernible distance of the IR distance sensor, in meters
+  extern const byte SAMPLE_NUMBER;
+  extern const double EQUALITY_THRESHOLD;
+  extern const double OBSTACLE_PRESENT;
+  extern const double SAFE_FRONT_DISTANCE;
+  extern const double REACHED_MISSION_SITE;
+  extern const double ULTRASONIC_MAX_RANGE;
+  extern const double IR_MAX_RANGE;
+}
+
+namespace Angle {
+  extern const double EQUALITY_THRESHOLD;
 }
 
 namespace OSV {
@@ -51,7 +55,7 @@ namespace Field {
     extern const double WIDTH;
     extern const double ROCKY_TERRAIN_X;
     extern const double OBSTACLE_LANE_WIDTH;
-    extern const double OBSTACLE_ENDZONE_X; // The x location after which there are guaranteed to be no obstacles
+    extern const double OBSTACLE_ENDZONE_X;
 }
 
 namespace FireSite {

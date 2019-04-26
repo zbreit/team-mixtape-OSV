@@ -2,7 +2,7 @@
  * Navigate to the mission site
  */
 void Navigator::navigate() {
-  driveOverRockyTerrain();
+  prepareToCrossRockyTerrain();
   reachMissionSiteX();
   goTheDistance();
   driveTrain->stop();
@@ -17,11 +17,10 @@ void Navigator::navigate() {
 /**
  * From a random starting location in the landing zone, drive the robot a little bit the rocky terrain
  */
-void Navigator::driveOverRockyTerrain() {
-  Enes100.println("Navigating across rocky terrain");
+void Navigator::prepareToCrossRockyTerrain() {
+  Enes100.println("Preparing to cross rocky terrain");
   driveToMiddleLane();
   driveTrain->turnTo(0);
-  driveTrain->driveStraight(Field::ROCKY_TERRAIN_X - LocationManager::getBackX());
   Enes100.println("Crossed rocky terrain!!");
 }
 
@@ -60,11 +59,7 @@ void Navigator::swapLanes() {
 
 void Navigator::turnUntilOpening() {
   Enes100.println("Turning until an opening...");
-  double turnSpeed = (lane == Lane::MIDDLE) ? -0.5 : 0.5;
-  
-  driveTrain->turn(turnSpeed);
-  while(obstaclesStillInTheWay()) {delay(200);}
-  driveTrain->stop();
+  driveTrain->turnTo((lane == Lane::MIDDLE) ? 315. : 45.);
   Enes100.println("Found an opening!!");
 }
 
