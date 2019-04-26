@@ -1,3 +1,5 @@
+#include "utils.h"
+
 /**
  * Returns the distance between two coordinates
  * @param startPoint the first point
@@ -16,23 +18,16 @@ double distanceBetween(Coordinate& startPoint, Coordinate& endPoint) {
  */
 bool isBehind(Coordinate& startPoint, Coordinate& endPoint) {
   // Define the component vector for the starting point's orientation
-//  printPoint(startPoint, "STARTPOINT");
   double startPointX = cos(startPoint.theta);
   double startPointY = sin(startPoint.theta);
-  
-//  printPoint(Coordinate(startPointX, startPointY), "UNIT VECTOR");
 
   // Now, we find the x and y distance between the endpoint and the start point
   // as the second vector's components
-//  printPoint(endPoint, "ENDPOINT");
   double endPointX = endPoint.x - startPoint.x;
   double endPointY = endPoint.y - startPoint.y;
-//  printPoint(Coordinate(endPointX, endPointY), "END TO START VECTOR");
 
   // Now, if the dot product of the two vectors is negative, the endPoint is behind the startPoint
   double dotProduct = (startPointX * endPointX) + (startPointY * endPointY);
-//  Enes100.print("DOT PRODUCT: ");
-//  Enes100.println(dotProduct);
   return dotProduct < 0;
 }
 
@@ -91,6 +86,15 @@ double getAngularDifference(double startingAngle, double endAngle) {
   }
 }
 
+/**
+ * Takes the given value within a specified range [fromLow, fromHigh] and remaps it to [toLow, toHigh]
+ * @param value the number you want to rescale
+ * @param fromLow the lower bound of the original range
+ * @param fromHigh the upper bound of the original range
+ * @param toLow the lower bound of the new range
+ * @param toHigh the upper bound of the new range
+ * @return the remapped value in the new range
+ */
 float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh) {
   return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
 }

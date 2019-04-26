@@ -1,5 +1,5 @@
-#include <vector>
-#include <algorithm>
+#include "FlameSensor.h"
+
 /**
  * Creates a flame sensor
  * @param dataPin the analog pin to which the sensor is physically connected

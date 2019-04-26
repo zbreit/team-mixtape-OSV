@@ -1,3 +1,6 @@
+#ifndef EXTINGUISHER
+#define EXTINGUISHER
+
 class ExtinguishingArm {
 private:
   Servo armMotor;
@@ -12,3 +15,5 @@ public:
    void extinguish();
    void reportFlameCount();
 };
+
+#endif

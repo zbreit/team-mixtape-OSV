@@ -1,3 +1,6 @@
+#include "Constants.h"
+#include "DCMotor.h"
+
 /**
  * Creates a new motor
  * @param directionPin the pin that controls the motor's direction

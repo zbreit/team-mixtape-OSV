@@ -8,8 +8,26 @@ private:
     static DriveTrain* instance;
     DCMotor leftMotor;
     DCMotor rightMotor;
+
+    // Setpoints and outputs for PID
+    double calculatedStraightSpeed;
+    double calculatedTurnSpeed;
+    double currentHeadingError;
+    double currentDistanceError;
+
+    // PID Controllers
+    PID turnPID;
+    PID drivePID;
+    PID straightenerPID;
+
     DriveTrain();
     
+    /* Convenience Methods */
+    void setUpDriveStraightPIDControllers();
+    void tearDownDriveStraightPIDControllers();
+    void setUpTurnPIDController();
+    void tearDownTurnPIDController();
+
 public:
     void turnTo(double angle);
     bool driveStraight(double distance);

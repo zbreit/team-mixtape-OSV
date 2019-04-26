@@ -63,17 +63,33 @@ namespace FireSite {
     extern const int SIDE_COUNT;
 }
 
-namespace PIDConstants {
-    extern const double TURN_P; // Proportionality constant for turning
-    extern const double DRIVE_P;
-    extern const double DRIVE_AT_ANGLE_P; // Proportionality constant for determining angular adjustments on each side
+namespace PIDSettings {
+    // Turning
+    extern const double TURN_KP;
+    extern const double TURN_KI;
+    extern const double TURN_KD;
+
+    // Driving Straight
+    extern const double DRIVE_KP;
+    extern const double DRIVE_KI;
+    extern const double DRIVE_KD;
+
+    // Determining angular adjustments on each side
+    extern const double STRAIGHTEN_KP;
+    extern const double STRAIGHTEN_KI;
+    extern const double STRAIGHTEN_KD;
+
+    // Used so that the PID errors can be calculated manually (by subtracting a calculated error from 0)
+    extern const double ALWAYS_ZERO;
 }
 
 namespace Motors {
     extern const double LEFT_MIN_COMMAND;
     extern const double RIGHT_MIN_COMMAND;
+    extern const double MIN_COMMAND;
     extern const double LEFT_MAX_COMMAND;
     extern const double RIGHT_MAX_COMMAND;
+    extern const double MAX_COMMAND;
     extern const bool LEFT_IS_REVERSED;
     extern const bool RIGHT_IS_REVERSED;
 }

@@ -1,3 +1,5 @@
+#include "Constants.h"
+
 // Digital Sensors
 const byte Pins::LEFT_ULTRASONIC_TRIGGER = 8;
 const byte Pins::LEFT_ULTRASONIC_ECHO = 8;
@@ -48,14 +50,29 @@ const double FireSite::CANDLE_INSET = 0.05;
 const int FireSite::SIDE_COUNT = 4;
 
 // PID Constants
-const double PIDConstants::TURN_P = 0.05;
-const double PIDConstants::DRIVE_P = 4.;
-const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;
+    // Turning
+const double PIDSettings::TURN_KP = 0.05;
+const double PIDSettings::TURN_KI = 0.;
+const double PIDSettings::TURN_KD = 0.;
+
+    // Driving Straight
+const double PIDSettings::DRIVE_KP = 4.;
+const double PIDSettings::DRIVE_KI = 0.;
+const double PIDSettings::DRIVE_KD = 0.;
+
+    // Determining angular adjustments on each side
+const double PIDSettings::STRAIGHTEN_KP = 0.05;
+const double PIDSettings::STRAIGHTEN_KI = 0.;
+const double PIDSettings::STRAIGHTEN_KD = 0.;
+
+const double PIDSettings::ALWAYS_ZERO = 0.;
 
 // Motors
 const double Motors::LEFT_MIN_COMMAND = 0.2;
 const double Motors::RIGHT_MIN_COMMAND = 0.2;
+const double Motors::MIN_COMMAND = std::min(Motors::LEFT_MIN_COMMAND, Motors::RIGHT_MIN_COMMAND);
 const double Motors::LEFT_MAX_COMMAND = 1.;
 const double Motors::RIGHT_MAX_COMMAND = 1.;
+const double Motors::MAX_COMMAND = std::min(Motors::LEFT_MAX_COMMAND, Motors::RIGHT_MAX_COMMAND);
 const bool Motors::LEFT_IS_REVERSED = false;
 const bool Motors::RIGHT_IS_REVERSED = false;

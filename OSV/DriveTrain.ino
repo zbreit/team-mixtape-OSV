@@ -1,3 +1,8 @@
+#include "DriveTrain.h"
+#include "Constants.h"
+#include "utils.h"
+
+// Instantiate the orignal drive train instance with a null value
 DriveTrain* DriveTrain::instance = 0;
 
 /**
@@ -5,8 +10,25 @@ DriveTrain* DriveTrain::instance = 0;
  */
 DriveTrain::DriveTrain() :
   leftMotor(Pins::LEFT_MOTOR_DIR, Pins::LEFT_MOTOR_PWM, Motors::LEFT_MIN_COMMAND, Motors::LEFT_MAX_COMMAND, Motors::LEFT_IS_REVERSED),
-  rightMotor(Pins::RIGHT_MOTOR_DIR, Pins::RIGHT_MOTOR_PWM, Motors::RIGHT_MIN_COMMAND, Motors::RIGHT_MAX_COMMAND, Motors::RIGHT_IS_REVERSED)
-{}
+  rightMotor(Pins::RIGHT_MOTOR_DIR, Pins::RIGHT_MOTOR_PWM, Motors::RIGHT_MIN_COMMAND, Motors::RIGHT_MAX_COMMAND, Motors::RIGHT_IS_REVERSED),
+  calculatedStraightSpeed(0),
+  calculatedTurnSpeed(0),
+  currentHeadingError(0),
+  currentDistanceError(0),
+  turnPID(&PIDSettings::ALWAYS_ZERO, &calculatedTurnSpeed, &currentHeadingError, PIDSettings::TURN_KP, PIDSettings::TURN_KI, PIDSettings::TURN_KD, DIRECT),
+  drivePID(&PIDSettings::ALWAYS_ZERO, &calculatedStraightSpeed, &currentDistanceError, PIDSettings::DRIVE_KP, PIDSettings::DRIVE_KI, PIDSettings::DRIVE_KD, DIRECT),
+  straightenerPID(&PIDSettings::ALWAYS_ZERO, &calculatedTurnSpeed, &currentHeadingError, PIDSettings::STRAIGHTEN_KP, PIDSettings::STRAIGHTEN_KI, PIDSettings::STRAIGHTEN_KD, DIRECT)
+{
+  // Remap the PID motor calculations to be between the minimum and maximum possible outputs for the motors
+  turnPID.SetOutputLimits(Motors::MIN_COMMAND, Motors::MAX_COMMAND);
+  drivePID.SetOutputLimits(Motors::MIN_COMMAND, Motors::MAX_COMMAND);
+  straightenerPID.SetOutputLimits(Motors::MIN_COMMAND, Motors::MAX_COMMAND);
+
+  // Turn off all PID Controllers to start off
+  turnPID.SetMode(MANUAL);
+  drivePID.SetMode(MANUAL);
+  straightenerPID.SetMode(MANUAL);
+}
 
 /**
  * @return the single instance of the DriveTrain class
@@ -27,14 +49,17 @@ DriveTrain* DriveTrain::getInstance() {
 void DriveTrain::turnTo(double angle) {
   Enes100.print("Turning to ");
   Enes100.println(angle);
-  double angularError = getAngularDifference(LocationManager::getHeading(), angle);
-  double speed;
+
+  setUpTurnPIDController();
   
-  while(abs(angularError) > 0.5) {
-    speed = angularError * PIDConstants::TURN_P;
-    turn(speed);
-    angularError = getAngularDifference(LocationManager::getHeading(), angle);
+  while(abs(currentHeadingError) > 0.5) {
+    turnPID.Compute();
+    turn(calculatedTurnSpeed);
+    currentHeadingError = getAngularDifference(LocationManager::getHeading(), angle);
   }
+
+  tearDownTurnPIDController();
+
   Enes100.print("Reached ");
   Enes100.println(angle);
   stop();
@@ -57,27 +82,38 @@ bool DriveTrain::driveStraight(double distance) {
  * @return whether or not the OSV traveled the given distance without hitting any obstacles
  */
 bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
-    Enes100.print("Maintain Angle: ");
-    Enes100.println(angleToMaintain);
+    Enes100.print("Driving ");
+    Enes100.print(distance);
+    Enes100.print(" m away...");
+
+    setUpDriveStraightPIDControllers();
+
+    // Compute the distance error
     Coordinate currentLocation = LocationManager::getCurrentLocation();
     Coordinate desiredLocation = advance(currentLocation, distance);
-    double distanceError = distanceBetween(currentLocation, desiredLocation);
-    double speed;
-    while(abs(distanceError) > Distance::THRESHOLD) {
-      speed = distanceError * PIDConstants::DRIVE_P;
-      currentLocation = LocationManager::getCurrentLocation();
-      distanceError = distanceBetween(currentLocation, desiredLocation);
-      smartDrive(speed, 
+    currentDistanceError = distanceBetween(currentLocation, desiredLocation);
+
+    while(abs(currentDistanceError) > Distance::THRESHOLD) {
+      // Drive at the calculated speed
+      drivePID.Compute();
+      smartDrive(calculatedStraightSpeed, 
         getAngularDifference(angleToMaintain, LocationManager::getHeading(currentLocation.theta)));
 
-      // If you detect an obstacle, return false
+      // Compute current error
+      currentLocation = LocationManager::getCurrentLocation();
+      currentDistanceError = distanceBetween(currentLocation, desiredLocation);
+      
+      // If you detect an obstacle, return false and run teardown code
       if(LocationManager::obstaclesBlockingTheFront()) {
         Enes100.println("Found an obstacle dude");
+        tearDownDriveStraightPIDControllers();
         stop();
         return false;
       }
     }
-    Enes100.println("DROVE SUCCESSFULLY");
+    Enes100.println("Drove successfully!!");
+
+    tearDownDriveStraightPIDControllers();
     stop();
     return true;
 }
@@ -93,7 +129,8 @@ bool DriveTrain::driveStraight(double distance, double angleToMaintain) {
 void DriveTrain::smartDrive(double speed, double angularError) {
   Enes100.print("Angular Error");
   Enes100.println(angularError);
-  double angleSpeedAdjustment = angularError * PIDConstants::DRIVE_AT_ANGLE_P;
+
+  double angleSpeedAdjustment = angularError * PIDSettings::STRAIGHTEN_KP;
   leftMotor.set(speed + angleSpeedAdjustment);
   rightMotor.set(speed - angleSpeedAdjustment);
 }
@@ -115,4 +152,41 @@ void DriveTrain::turn(double speed) {
 void DriveTrain::stop() {
   leftMotor.stop();
   rightMotor.stop();
+}
+
+/**
+ * Turns on all PID controllers  control the functionality to drive straight and sets all related output and input values to 0
+ */
+void DriveTrain::setUpDriveStraightPIDControllers() {
+  drivePID.SetMode(MANUAL);
+  straightenerPID.SetMode(MANUAL);
+  currentDistanceError = 0;
+  currentHeadingError = 0;
+  calculatedStraightSpeed = 0;
+  calculatedTurnSpeed = 0;
+}
+
+/**
+ * Turns off all PID controllers that control the functionality to drive straight
+ */
+void DriveTrain::tearDownDriveStraightPIDControllers() {
+  drivePID.SetMode(AUTOMATIC);
+  straightenerPID.SetMode(AUTOMATIC);
+
+}
+
+/**
+ * Turns off all turn-related PID controllers and sets all output and input values to 0
+ */
+void DriveTrain::setUpTurnPIDController() {
+  turnPID.SetMode(MANUAL);
+  calculatedStraightSpeed = 0;
+  calculatedTurnSpeed = 0;
+}
+
+/**
+ * Turns off all turn-related PID controllers
+ */
+void DriveTrain::tearDownTurnPIDController() {
+  turnPID.SetMode(AUTOMATIC);
 }

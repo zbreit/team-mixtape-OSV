@@ -1,3 +1,6 @@
+#include "ExtinguishingArm.h"
+#include "Arduino.h"
+
 /**
  * Create an extinguishing arm
  * @param armMotorPin the signal pin of the arm servo 
@@ -16,10 +19,12 @@ ExtinguishingArm::ExtinguishingArm(pin armMotorPin, pin flameSensorPin) :
  */
 void ExtinguishingArm::extinguish() {
   if(flameSensor.didDetectFlame()) {
+    Enes100.println("FOUND FLAME!!\nExtingushining...");
     lower();
     delay(5000); // TODO: Delay 5 seconds (CHANGE THIS IF UNRELIABLE)
     raise();
     flameCount++;
+    Enes100.println("Extinguished!!");
   }
 }
 
