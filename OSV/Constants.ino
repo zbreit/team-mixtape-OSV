@@ -1,5 +1,10 @@
 #include "Constants.h"
 
+// INFORMATION TO UPDATE
+const pin Pins::WIFI_TRANSMITTER = 6;
+const pin Pins::WIFI_RECEIVER = 5;
+const int OSV::ARUCO_MARKER_ID = 3;
+
 // Digital Sensors
 const pin Pins::LEFT_ULTRASONIC_TRIGGER = 8;
 const pin Pins::LEFT_ULTRASONIC_ECHO = 8;
@@ -8,8 +13,8 @@ const pin Pins::RIGHT_ULTRASONIC_ECHO = 9;
 
 // Motors
 // Right motor connected to M1 on the Romeo, left to M2
-const pin Pins::RIGHT_MOTOR_PWM = 5;
-const pin Pins::LEFT_MOTOR_PWM = 6;
+const pin Pins::RIGHT_MOTOR_PWM = 12;
+const pin Pins::LEFT_MOTOR_PWM = 13;
 const pin Pins::RIGHT_MOTOR_DIR = 4;
 const pin Pins::LEFT_MOTOR_DIR = 7;
 const pin Pins::ARM_MOTOR = 3;
@@ -17,10 +22,6 @@ const pin Pins::ARM_MOTOR = 3;
 // Analog Input
 const pin Pins::ARM_MOTOR_POS = A0;
 const pin Pins::IR_FLAME_SENSOR = A2;
-
-// WIFI
-const pin Pins::WIFI_TRANSMITTER = 4;
-const pin Pins::WIFI_RECEIVER = 2;
 
 // Distance
 const byte Distance::SAMPLE_NUMBER = 11;            // The number of distance measurements to take before returning the median
@@ -39,7 +40,6 @@ const double Angle::LANE_SHIFT = radiansToDegrees(atan2(Distance::SAFE_FRONT_DIS
 // OSV Dimensions
 const double OSV::LENGTH = 0.299; // TODO: Change back to 0.3 for real OSV
 const double OSV::WIDTH = 0.168;
-const int OSV::ARUCO_MARKER_ID = 3;            // TODO: update
 const double OSV::ARM_EXTENSION_LENGTH = 0.15; // TODO: update
 
 // Field Dimensions

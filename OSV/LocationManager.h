@@ -4,6 +4,9 @@
 #include "Constants.h"
 #include "utils.h"
 
+/**
+ * A collection of static methods to determine the location of the OSV in relation to the field and the obstacles
+ */
 class LocationManager
 {
 private:

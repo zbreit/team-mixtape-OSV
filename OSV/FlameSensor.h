@@ -3,6 +3,9 @@
 
 #include "utils.h"
 
+/**
+ * Wrapper class for the IR flame sensor. Uses median filtering of the results
+ */
 class FlameSensor
 {
 private:

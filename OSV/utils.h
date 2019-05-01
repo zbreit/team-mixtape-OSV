@@ -4,6 +4,10 @@
 #include <math.h>
 #include "Constants.h"
 
+/**
+ * Contains convenience methods for various math and angle calculations
+ */
+
 // Basic Data Structures
 
 /**

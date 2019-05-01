@@ -3,6 +3,9 @@
 
 #include "utils.h"
 
+/**
+ * Wrapper class to control motors on the Arduino Romeo. Provides methods to reverse motor polarity, set min and max output. 
+ */
 class DCMotor
 {
   private:

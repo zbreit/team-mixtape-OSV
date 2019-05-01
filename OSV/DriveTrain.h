@@ -4,6 +4,9 @@
 #include "DCMotor.h"
 #include "Timer.h"
 
+/**
+ * Provides high-level control for the OSV's locomotion
+ */
 class DriveTrain
 {
   private:

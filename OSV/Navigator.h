@@ -5,6 +5,9 @@
 #include "DriveTrain.h"
 #include "ExtinguishingArm.h"
 
+/**
+ * Contains all obstacle and mission navigation functionality
+ */
 class Navigator
 {
 private:
@@ -21,6 +24,7 @@ private:
   void driveToMiddleLane();
 
   /**
+   * 
    * From a random starting location in the landing zone, drive the robot to the middle lane 
    * and turn towards it
    */

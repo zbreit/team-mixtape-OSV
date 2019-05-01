@@ -4,6 +4,9 @@
 #include "utils.h"
 #include "FlameSensor.h"
 
+/**
+ * Provides high-level control of the OSV's arm. 
+ */
 class ExtinguishingArm
 {
 private:

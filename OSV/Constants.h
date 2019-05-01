@@ -1,10 +1,13 @@
 #ifndef CONSTANTS
 #define CONSTANTS
+#include "utils.h"
 
 typedef unsigned char pin;
 typedef unsigned char byte;
 
-#include "utils.h"
+/** 
+ * Stores all configuration info (e.g., pin mappings, PID constants, OSV dimensions)
+ */
 
 namespace Pins
 {
