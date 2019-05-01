@@ -1,3 +1,5 @@
+#include "Constants.h"
+
 // Digital Sensors
 const pin Pins::LEFT_ULTRASONIC_TRIGGER = 8;
 const pin Pins::LEFT_ULTRASONIC_ECHO = 8;
@@ -17,25 +19,27 @@ const pin Pins::ARM_MOTOR_POS = A0;
 const pin Pins::IR_FLAME_SENSOR = A2;
 
 // WIFI
-const pin Pins::WIFI_TRANSMITTER = 8;
-const pin Pins::WIFI_RECEIVER = 9;
+const pin Pins::WIFI_TRANSMITTER = 4;
+const pin Pins::WIFI_RECEIVER = 2;
 
 // Distance
 const byte Distance::SAMPLE_NUMBER = 11;            // The number of distance measurements to take before returning the median
 const double Distance::EQUALITY_THRESHOLD = 0.025;  // The distance, in meters, for when two positions are considered equal
-const double Distance::SAFE_FRONT_DISTANCE = 0.23;  // The distance, in meters, for when an obstacle is in the way
+const double Distance::SAFE_FRONT_DISTANCE = 0.3;   // The distance, in meters, for when an obstacle is in the way
 const double Distance::ULTRASONIC_MAX_RANGE = 1.;   // The distance, in meters, where it is safe to have an obstacle present
 const double Distance::IR_MAX_RANGE = 1.;           // The maximum discernible distance of the IR distance sensor, in meters
 const double Distance::REACHED_MISSION_SITE = 0.15; // The maximum difference between the OSV and the mission site positions after avoiding all obstacles
 
 // Angles
 const double Angle::EQUALITY_THRESHOLD = 0.25; // The angular difference between 2 angles, in degrees, at which they are considred equal
-const double Angle::LANE_SHIFT = 1. / PI * 180; // Angle to shift between the lanes
+const double Angle::LANE_SHIFT = radiansToDegrees(atan2(Distance::SAFE_FRONT_DISTANCE +
+                                                            OSV::LENGTH / 2,
+                                                        Field::OBSTACLE_LANE_WIDTH)); // Angle to shift between the lanes, in degrees
 
 // OSV Dimensions
 const double OSV::LENGTH = 0.299; // TODO: Change back to 0.3 for real OSV
 const double OSV::WIDTH = 0.168;
-const int OSV::ARUCO_MARKER_ID = 3; // TODO: update
+const int OSV::ARUCO_MARKER_ID = 3;            // TODO: update
 const double OSV::ARM_EXTENSION_LENGTH = 0.15; // TODO: update
 
 // Field Dimensions
@@ -56,6 +60,7 @@ const int FireSite::SIDE_COUNT = 4;
 const double PIDConstants::TURN_P = 0.05;
 const double PIDConstants::DRIVE_P = 4.;
 const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;
+const double PIDConstants::COMMAND_TIMEOUT = 10.;
 
 // Motors
 const double Motors::LEFT_MIN_COMMAND = 0.2;  // The lowest left motor speed at which the robot will move
