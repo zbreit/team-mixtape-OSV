@@ -53,6 +53,7 @@ build/shared/reference*.zip
 build/shared/Edison*.zip
 build/shared/Galileo*.zip
 build/shared/WiFi101-Updater-ArduinoIDE-Plugin*.zip
+build/
 test-bin
 *.iml
 .idea
