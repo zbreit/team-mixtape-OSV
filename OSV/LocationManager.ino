@@ -146,7 +146,12 @@ double LocationManager::getFrontRightDistance()
 double LocationManager::getDistance(const NewPing &sensor)
 {
   unsigned int medianTimePerPing = sensor.ping_median(Distance::SAMPLE_NUMBER);
-  return sensor.convert_cm(medianTimePerPing);
+  unsigned int sensedDistance = sensor.convert_cm(medianTimePerPing);
+
+  // Return an arbitrarily large value if the sensor reading is a 0.
+  // This is due to an intricacy with the NewPing library, where out of range values
+  // are assigned to 0 instead of a larger value.
+  return (sensedDistance == 0) ? 100000 : sensedDistance;
 }
 
 
