@@ -1,8 +1,8 @@
 #include "Constants.h"
 
 // INFORMATION TO UPDATE
-const pin Pins::WIFI_TRANSMITTER = 6;
-const pin Pins::WIFI_RECEIVER = 5;
+const pin Pins::WIFI_TRANSMITTER = 12;
+const pin Pins::WIFI_RECEIVER = 13;
 const int OSV::ARUCO_MARKER_ID = 3;
 
 // Digital Sensors
@@ -13,8 +13,8 @@ const pin Pins::RIGHT_ULTRASONIC_ECHO = 9;
 
 // Motors
 // Right motor connected to M1 on the Romeo, left to M2
-const pin Pins::RIGHT_MOTOR_PWM = 12;
-const pin Pins::LEFT_MOTOR_PWM = 13;
+const pin Pins::RIGHT_MOTOR_PWM = 5;
+const pin Pins::LEFT_MOTOR_PWM = 6;
 const pin Pins::RIGHT_MOTOR_DIR = 4;
 const pin Pins::LEFT_MOTOR_DIR = 7;
 const pin Pins::ARM_MOTOR = 3;
