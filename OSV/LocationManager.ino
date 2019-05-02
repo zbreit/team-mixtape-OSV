@@ -18,9 +18,7 @@ Coordinate *LocationManager::MISSION_LOCATION = 0;
 void LocationManager::waitForLocationUpdate()
 {
   //TODO: might need to add in a timer to prevent an infinite loop
-  while (!Enes100.updateLocation())
-  {
-  }
+  while (!Enes100.updateLocation()) {}
 }
 
 /**
@@ -36,15 +34,24 @@ Coordinate LocationManager::getCurrentLocation()
 }
 
 
+Coordinate* LocationManager::getCenter()
+{
+  // Polls for the location of the aruco marker, and extends that distance
+  // by the offset of the marker from the center of the OSV
+  Coordinate currentLocation = getCurrentLocation();
+  return &advance(currentLocation, OSV::ARUCO_MARKER_CENTER_OFFSET);
+}
+
+
 double LocationManager::getCenterX()
 {
-  return getCurrentLocation().x;
+  return getCenter()->x;
 }
 
 
 double LocationManager::getCenterY()
 {
-  return getCurrentLocation().y;
+  return getCenter()->y;
 }
 
 

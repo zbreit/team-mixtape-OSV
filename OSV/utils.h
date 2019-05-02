@@ -40,7 +40,8 @@ bool isBehind(Coordinate &startPoint, Coordinate &endPoint);
  * Returns a new coordinate that extends the given location vector
  * by the distance
  * @param location a vector representing a given position
- * @param distance how far you wish to extend the given vector. Must be positive.
+ * @param distance how far you wish to extend the given vector. If it is positive, the vector
+ * extends forward, if it is negative, the vector extends backwards. 
  * @return a coordinate with the advanced location
  */
 Coordinate advance(Coordinate &location, double distance);

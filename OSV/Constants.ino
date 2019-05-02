@@ -41,6 +41,7 @@ const double Angle::LANE_SHIFT = radiansToDegrees(atan2(Distance::SAFE_FRONT_DIS
 const double OSV::LENGTH = 0.299; // TODO: Change back to 0.3 for real OSV
 const double OSV::WIDTH = 0.168;
 const double OSV::ARM_EXTENSION_LENGTH = 0.15; // TODO: update
+const double ARUCO_MARKER_CENTER_OFFSET = 0.; // The distance between the center of the OSV and the center of the Aruco marker along the length of the OSV
 
 // Field Dimensions
 const double Field::LENGTH = 4.;

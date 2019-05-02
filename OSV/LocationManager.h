@@ -31,6 +31,11 @@ private:
    */
   static double getDistance(const NewPing &sensor);
 
+  /**
+   * @return a coordinate representing the center of the OSV
+   */
+  static Coordinate* getCenter();
+
 public:
   // OSV Vision system info
 
@@ -81,7 +86,6 @@ public:
    * @return the y location of the back of the OSV when it is vertical
    */
   static double getBottomY();
-  static double getBackY();
 
   /**
    * @return the x location of back side of OSV when it is horizontal
