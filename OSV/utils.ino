@@ -70,6 +70,7 @@ double getAngularDifference(double startingAngle, double endAngle)
   }
 }
 
+
 float fmap(float value, float fromLow, float fromHigh, float toLow, float toHigh)
 {
   return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;

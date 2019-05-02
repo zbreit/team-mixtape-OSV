@@ -35,45 +35,54 @@ Coordinate LocationManager::getCurrentLocation()
   return Enes100.location;
 }
 
+
 double LocationManager::getCenterX()
 {
   return getCurrentLocation().x;
 }
+
 
 double LocationManager::getCenterY()
 {
   return getCurrentLocation().y;
 }
 
+
 double LocationManager::getSideX()
 {
   return getCenterX() + (OSV::WIDTH / 2);
 }
+
 
 double LocationManager::getFrontX()
 {
   return getCenterX() + (OSV::LENGTH / 2);
 }
 
+
 double LocationManager::getBackX()
 {
   return getCenterX() - (OSV::LENGTH / 2);
 }
+
 
 double LocationManager::getTopY()
 {
   return getCenterY() + (OSV::LENGTH / 2);
 }
 
+
 double LocationManager::getBottomY()
 {
   return getCenterY() - (OSV::LENGTH / 2);
 }
 
+
 double LocationManager::getHeading()
 {
   return getHeading(getCurrentLocation().theta);
 }
+
 
 double LocationManager::getHeading(double rawThetaValue)
 {
@@ -81,6 +90,7 @@ double LocationManager::getHeading(double rawThetaValue)
              ? radiansToDegrees(rawThetaValue)
              : 360 + radiansToDegrees(rawThetaValue);
 }
+
 
 double LocationManager::getRoundedHeading()
 {
@@ -119,10 +129,12 @@ double LocationManager::getFrontLeftDistance()
   return getDistance(frontLeftSensor);
 }
 
+
 double LocationManager::getFrontRightDistance()
 {
   return getDistance(frontRightSensor);
 }
+
 
 double LocationManager::getDistance(const NewPing &sensor)
 {
@@ -130,15 +142,18 @@ double LocationManager::getDistance(const NewPing &sensor)
   return sensor.convert_cm(medianTimePerPing);
 }
 
+
 bool LocationManager::obstaclesBlockingTheFront()
 {
   return obstaclesBlockingTheFrontLeft() || obstaclesBlockingTheFrontRight();
 }
 
+
 bool LocationManager::obstaclesBlockingTheFrontRight()
 {
   return getFrontRightDistance() < Distance::SAFE_FRONT_DISTANCE;
 }
+
 
 bool LocationManager::obstaclesBlockingTheFrontLeft()
 {
@@ -161,30 +176,36 @@ Coordinate *LocationManager::getMissionLocation()
   return MISSION_LOCATION;
 }
 
+
 double LocationManager::getMissionCenterY()
 {
   return getMissionLocation()->y;
 }
+
 
 double LocationManager::getMissionCenterX()
 {
   return getMissionLocation()->x;
 }
 
+
 double LocationManager::getMissionX()
 {
   return getMissionCenterX() - FireSite::RADIUS;
 }
+
 
 double LocationManager::getMissionY()
 {
   return getMissionCenterY() + FireSite::RADIUS;
 }
 
+
 double LocationManager::getMissionBottomY()
 {
   return getMissionCenterY() - FireSite::RADIUS;
 }
+
 
 double LocationManager::getMissionBackX()
 {

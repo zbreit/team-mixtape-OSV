@@ -7,7 +7,7 @@
 
 void setup()
 {
-  Serial.begin(1000);
+  Serial.begin(9600);
   while (!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_TRANSMITTER, Pins::WIFI_RECEIVER))
   {
    Serial.println("Connecting to vision system...");
@@ -17,6 +17,7 @@ void setup()
   // navigator->navigate();
   // navigator->countAndExtinguishFlames();
 }
+
 
 void loop()
 {
