@@ -1,6 +1,7 @@
 #ifndef UTILS
 #define UTILS
 
+#include <Enes100.h>
 #include <math.h>
 #include "Constants.h"
 
@@ -21,6 +22,23 @@ enum class Lane
 };
 
 // Helper Methods
+
+/**
+ * Prints the following string: "{key}: {value}\n"
+ */
+template <class V>
+void printPair(const char* key, V value) {
+  // NOTE: This is declared here due to an intricacy with template functions
+  // needing be defined and declared in the same file
+  Enes100.print(key);
+  Enes100.print(": ");
+  Enes100.println(value);
+
+  //TODO: remove
+  Serial.print(key);
+  Serial.print(": ");
+  Serial.println(value);
+}
 
 /**
  * Returns the distance between two coordinates
@@ -87,6 +105,6 @@ int invertState(int state);
 /**
  * Prints the points x, y and theta to the serial monitor
  */
-void printPoint(Coordinate point, String nameOfPoint = "Point");
+void printPoint(Coordinate point, const char* nameOfPoint = "Point");
 
 #endif

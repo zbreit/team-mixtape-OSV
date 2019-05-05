@@ -3,6 +3,7 @@
 
 #include "DCMotor.h"
 #include "Timer.h"
+#include "LocationManager.h"
 
 /**
  * Provides high-level control for the OSV's locomotion

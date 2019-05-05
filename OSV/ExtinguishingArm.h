@@ -1,6 +1,7 @@
 #ifndef EXTINGUISHER
 #define EXTINGUISHER
 
+#include <Servo.h>
 #include "utils.h"
 #include "FlameSensor.h"
 
@@ -13,7 +14,7 @@ private:
   Servo armMotor;
   FlameSensor flameSensor;
   int flameCount;
-  const int LOW_STATE_ANGLE = 20;
+  const int LOW_STATE_ANGLE = 70;
   const int HIGH_STATE_ANGLE = 0;
 
   /**

@@ -21,26 +21,27 @@ DriveTrain *DriveTrain::getInstance()
 
 void DriveTrain::turnTo(double angle)
 {
-  Enes100.print("Turning to ");
-  Enes100.println(angle);
+  printPair("Turning to", angle);
   double angularError = getAngularDifference(LocationManager::getHeading(), angle);
   double speed;
 
+  // Continue turning while the error is still significant and the command hasn't timed out
   Timer PIDTimer;
   while (dabs(angularError) > Angle::EQUALITY_THRESHOLD && !PIDTimer.isFinished())
-  {
+  { 
+    // Use basic P-control to determine the output speed, then recalculate the error
     speed = angularError * PIDConstants::TURN_P;
     turn(speed);
     angularError = getAngularDifference(LocationManager::getHeading(), angle);
   }
+
   if(PIDTimer.isFinished())
   {
-    Enes100.print("COMMAND TIMED OUT");
+    Enes100.print("turnTo() TIMED OUT");
   } 
   else
   {
-    Enes100.print("Reached ");
-    Enes100.println(angle);
+    printPair("Reached", angle);
   }
   stop();
 }
@@ -54,25 +55,25 @@ bool DriveTrain::driveStraight(double distance)
 
 bool DriveTrain::driveStraight(double distance, double angleToMaintain)
 {
-  Enes100.print("Maintain Angle: ");
-  Enes100.println(angleToMaintain);
+  printPair("Maintain Angle", angleToMaintain);
 
-  // Determine the desired location based on the current location
+  // Determine the desired location and error based on the current location
   Coordinate currentLocation = LocationManager::getCurrentLocation();
   Coordinate desiredLocation = advance(currentLocation, distance);
-
-  // Keep driving until the error is within the bounds
   double distanceError = distanceBetween(currentLocation, desiredLocation);
-  double speed;
+  double baseDriveSpeed;
+
+  // Keep driving until the error is within the bounds or the command times out
   Timer PIDTimer;
   while (dabs(distanceError) > Distance::EQUALITY_THRESHOLD && !PIDTimer.isFinished())
   {
-    speed = distanceError * PIDConstants::DRIVE_P;
+    // Use simple P-control to determine the base drive speed
+    baseDriveSpeed = distanceError * PIDConstants::DRIVE_P;
     currentLocation = LocationManager::getCurrentLocation();
     distanceError = distanceBetween(currentLocation, desiredLocation);
 
     // Drive the OSV at a given speed, adjusting the left and right motor outputs to stay aligned with the provided angle
-    smartDrive(speed,
+    smartDrive(baseDriveSpeed,
                getAngularDifference(angleToMaintain, LocationManager::getHeading(currentLocation.theta)));
 
     // If you detect an obstacle, return false
@@ -102,6 +103,7 @@ void DriveTrain::smartDrive(double speed, double angularError)
   Enes100.print("Angular Error");
   Enes100.println(angularError);
 
+  // Use P-control to determine the left and right side adjustments based on the angular error
   double angleSpeedAdjustment = angularError * PIDConstants::DRIVE_AT_ANGLE_P;
   leftMotor.set(speed + angleSpeedAdjustment);
   rightMotor.set(speed - angleSpeedAdjustment);

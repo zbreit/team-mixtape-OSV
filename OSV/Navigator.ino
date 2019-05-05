@@ -22,6 +22,7 @@ void Navigator::prepareToCrossRockyTerrain()
   Enes100.println("Crossed rocky terrain!!");
 }
 
+
 void Navigator::driveToMiddleLane()
 {
   Enes100.println("Navigating to the middle lane");
@@ -30,6 +31,7 @@ void Navigator::driveToMiddleLane()
   driveTrain->driveStraight(Field::WIDTH / 2 - LocationManager::getCenterY());
   Enes100.println("Reached the middle lane!!");
 }
+
 
 void Navigator::reachMissionSiteX()
 {
@@ -41,6 +43,7 @@ void Navigator::reachMissionSiteX()
   }
   Enes100.println("Aligned with the mission site...");
 }
+
 
 void Navigator::swapLanes()
 {
@@ -59,6 +62,7 @@ void Navigator::swapLanes()
   Enes100.println("Swapped Lanes!!");
 }
 
+
 void Navigator::turnUntilOpening()
 {
   Enes100.println("Turning until an opening...");
@@ -68,11 +72,13 @@ void Navigator::turnUntilOpening()
   Enes100.println("Found an opening!!");
 }
 
+
 bool Navigator::obstaclesStillInTheWay()
 {
   // TODO: Make more accurate
   return LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE;
 }
+
 
 void Navigator::driveToNextLane()
 {
@@ -120,8 +126,7 @@ void Navigator::countAndExtinguishFlames()
 
 void Navigator::countAndExtinguishSide(int sideNum)
 {
-  Enes100.print("Extinguishing flames on side ");
-  Enes100.print(sideNum + 1);
+  printPoint("Extinguishing flames on side", sideNum + 1);
   // The angle to which you need to rotate on each cycle around the fire site
   const int angleList[] = {270, 180, 90, 0};
 

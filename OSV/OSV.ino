@@ -10,7 +10,8 @@ void setup()
   Serial.begin(9600);
   while (!Enes100.begin("MIXTAPE", FIRE, OSV::ARUCO_MARKER_ID, Pins::WIFI_TRANSMITTER, Pins::WIFI_RECEIVER))
   {
-  Serial.println("Connecting to vision system...");
+    Serial.println("Connecting to vision system...");
+    delay(100);
   }
   Enes100.println("Connected!!!");
   // Navigator* navigator = Navigator::getInstance();

@@ -98,6 +98,7 @@ extern const double LEFT_MAX_COMMAND;
 extern const double RIGHT_MAX_COMMAND;
 extern const bool LEFT_IS_REVERSED;
 extern const bool RIGHT_IS_REVERSED;
+extern const int SERVO_COMMAND_DELAY_MS;
 } // namespace Motors
 
 #endif

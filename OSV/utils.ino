@@ -83,9 +83,9 @@ double dabs(double num)
 }
 
 
-void printPoint(Coordinate point, String nameOfPoint)
+void printPoint(Coordinate point, const char* nameOfPoint)
 {
-  Enes100.print(&nameOfPoint);
+  Enes100.print(nameOfPoint);
   Enes100.print(": (");
   Enes100.print(point.x);
   Enes100.print(", ");

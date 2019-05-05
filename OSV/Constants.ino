@@ -1,9 +1,9 @@
 #include "Constants.h"
 
 // INFORMATION TO UPDATE
-const pin Pins::WIFI_TRANSMITTER = 12;
-const pin Pins::WIFI_RECEIVER = 13;
-const int OSV::ARUCO_MARKER_ID = 3;
+const pin Pins::WIFI_TRANSMITTER = 10;
+const pin Pins::WIFI_RECEIVER = 11;
+const int OSV::ARUCO_MARKER_ID = 8;
 
 // Digital Sensors
 const pin Pins::LEFT_ULTRASONIC_TRIGGER = 8;
@@ -70,3 +70,4 @@ const double Motors::LEFT_MAX_COMMAND = 1.;   // The highest left motor speed
 const double Motors::RIGHT_MAX_COMMAND = 1.;  // The highest right motor speed
 const bool Motors::LEFT_IS_REVERSED = false;  // Whether the polarity of the motor should be flipped
 const bool Motors::RIGHT_IS_REVERSED = false; // Whether the polarity of the motor should be flipped
+const int SERVO_COMMAND_DELAY_MS = 50; // The delay between successive writes to the servo (used to slow down the rotation)

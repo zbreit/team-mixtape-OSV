@@ -1,6 +1,7 @@
 #ifndef FLAME_SENSOR
 #define FLAME_SENSOR
 
+#include <ArduinoSTL.h>
 #include "utils.h"
 
 /**
