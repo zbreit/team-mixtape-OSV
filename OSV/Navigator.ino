@@ -119,7 +119,8 @@ void Navigator::goTheDistance()
   Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(LocationManager::getMissionTopY() - LocationManager::getCenterY() + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->driveStraight(LocationManager::getMissionTopY() - LocationManager::getCenterY() 
+    + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET + OSV::ARM_CENTER_OFFSET);
   driveTrain->turnTo(0);
   driveTrain->driveStraight(LocationManager::getMissionLeftX() - LocationManager::getCenterX() + FireSite::EDGE_TO_CANDLE);
   Enes100.println("I can go the distance!!");
@@ -168,7 +169,7 @@ void Navigator::countAndExtinguishSide(int sideNum)
   Enes100.println("Finished candle 2!!");
 
   // Prepare for the next side
-  driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + (OSV::LENGTH - OSV::WIDTH) / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + OSV::WIDTH / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(angleList[sideNum]);
   Enes100.println("Extinguished all flames on this side!");
 }
