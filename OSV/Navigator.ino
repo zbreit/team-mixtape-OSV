@@ -119,9 +119,9 @@ void Navigator::goTheDistance()
   Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getY() + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->driveStraight(LocationManager::getMissionTopY() - LocationManager::getCenterY() + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(0);
-  driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getCenterX() + FireSite::EDGE_TO_CANDLE);
+  driveTrain->driveStraight(LocationManager::getMissionLeftX() - LocationManager::getCenterX() + FireSite::EDGE_TO_CANDLE);
   Enes100.println("I can go the distance!!");
 }
 
@@ -151,7 +151,7 @@ void Navigator::countAndExtinguishFlames()
 
 void Navigator::countAndExtinguishSide(int sideNum)
 {
-  printPoint("Extinguishing flames on side", sideNum + 1);
+  printPair("Extinguishing flames on side", sideNum + 1);
   // The angle to which you need to rotate on each cycle around the fire site
   const int angleList[] = {270, 180, 90, 0};
 

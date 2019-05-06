@@ -201,13 +201,13 @@ double LocationManager::getMissionCenterX()
 }
 
 
-double LocationManager::getMissionX()
+double LocationManager::getMissionLeftX()
 {
   return getMissionCenterX() - FireSite::RADIUS;
 }
 
 
-double LocationManager::getMissionY()
+double LocationManager::getMissionTopY()
 {
   return getMissionCenterY() + FireSite::RADIUS;
 }

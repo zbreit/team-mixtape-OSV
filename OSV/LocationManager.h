@@ -132,12 +132,12 @@ public:
   /** 
    * @return X of the left of the mission
    */
-  static double getMissionX();
+  static double getMissionLeftX();
 
   /** 
    * @return Y of the top of the mission
    */
-  static double getMissionY();
+  static double getMissionTopY();
 
   /** 
    * @return the x-location of the mission site's center 

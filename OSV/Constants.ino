@@ -5,6 +5,10 @@
 // INFORMATION TO UPDATE
 const int OSV::ARUCO_MARKER_ID = 8;
 
+// WIFI
+const pin Pins::WIFI_TRANSMITTER = 10;
+const pin Pins::WIFI_RECEIVER = 11;
+
 // Digital Sensors
 const pin Pins::LEFT_ULTRASONIC_TRIGGER = 8;
 const pin Pins::LEFT_ULTRASONIC_ECHO = 8;
