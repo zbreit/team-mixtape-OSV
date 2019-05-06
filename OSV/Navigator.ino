@@ -1,5 +1,36 @@
 #include "Navigator.h"
 
+/**
+ * ===============================
+ *   Logic to Create a Navigator 
+ * ===============================
+ */
+// Start off the Navigator instance as null
+Navigator *Navigator::instance = 0;
+
+Navigator::Navigator()
+{
+  driveTrain = DriveTrain::getInstance();
+  lane = Lane::MIDDLE;
+  extinguishingArm = &ExtinguishingArm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
+}
+
+Navigator *Navigator::getInstance()
+{
+  if (instance == 0)
+  {
+    instance = new Navigator();
+  }
+  return instance;
+}
+
+/**
+ * ==========================
+ *   Main Navigation Method
+ * ==========================
+ */
+
+
 void Navigator::navigate()
 {
   prepareToCrossRockyTerrain();
@@ -19,7 +50,7 @@ void Navigator::prepareToCrossRockyTerrain()
   Enes100.println("Preparing to cross rocky terrain");
   driveToMiddleLane();
   driveTrain->turnTo(0);
-  Enes100.println("Crossed rocky terrain!!");
+  Enes100.println("Ready to cross rocky terrain!!");
 }
 
 
@@ -50,15 +81,9 @@ void Navigator::swapLanes()
   Enes100.println("Swapping Lanes...");
   turnUntilOpening();
   driveToNextLane();
-
-  if (lane == Lane::MIDDLE)
-  {
-    lane = Lane::RIGHT;
-  }
-  else
-  {
-    lane = Lane::MIDDLE;
-  }
+  
+  // Swap the instance lane variable
+  lane = (lane == Lane::MIDDLE) ? Lane::RIGHT : Lane::MIDDLE;
   Enes100.println("Swapped Lanes!!");
 }
 
@@ -94,7 +119,7 @@ void Navigator::goTheDistance()
   Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY() - OSV::WIDTH + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getY() + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(0);
   driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getCenterX() + FireSite::EDGE_TO_CANDLE);
   Enes100.println("I can go the distance!!");
@@ -146,29 +171,4 @@ void Navigator::countAndExtinguishSide(int sideNum)
   driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + (OSV::LENGTH - OSV::WIDTH) / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(angleList[sideNum]);
   Enes100.println("Extinguished all flames on this side!");
-}
-
-/**
- * ===============================
- *   Logic to Create a Navigator 
- * ===============================
- */
-
-Navigator::Navigator()
-{
-  driveTrain = DriveTrain::getInstance();
-  lane = Lane::MIDDLE;
-  extinguishingArm = &ExtinguishingArm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
-}
-
-// Start off the Navigator instance as null
-Navigator *Navigator::instance = 0;
-
-Navigator *Navigator::getInstance()
-{
-  if (instance == 0)
-  {
-    instance = new Navigator();
-  }
-  return instance;
 }

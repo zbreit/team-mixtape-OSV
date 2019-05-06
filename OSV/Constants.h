@@ -60,6 +60,7 @@ extern const double WIDTH;
 extern const int ARUCO_MARKER_ID;
 extern const double ARM_EXTENSION_LENGTH;
 extern const double ARUCO_MARKER_CENTER_OFFSET;
+extern const double ARM_CENTER_OFFSET;
 } // namespace OSV
 
 namespace Field
