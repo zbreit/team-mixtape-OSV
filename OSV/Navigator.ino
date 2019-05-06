@@ -1,8 +1,39 @@
+#include "Navigator.h"
+
 /**
- * Navigate to the mission site
+ * ===============================
+ *   Logic to Create a Navigator 
+ * ===============================
  */
-void Navigator::navigate() {
-  driveOverRockyTerrain();
+// Start off the Navigator instance as null
+Navigator *Navigator::instance = 0;
+
+Navigator::Navigator()
+{
+  driveTrain = DriveTrain::getInstance();
+  lane = Lane::MIDDLE;
+  extinguishingArm = &ExtinguishingArm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
+}
+
+Navigator *Navigator::getInstance()
+{
+  if (instance == 0)
+  {
+    instance = new Navigator();
+  }
+  return instance;
+}
+
+/**
+ * ==========================
+ *   Main Navigation Method
+ * ==========================
+ */
+
+
+void Navigator::navigate()
+{
+  prepareToCrossRockyTerrain();
   reachMissionSiteX();
   goTheDistance();
   driveTrain->stop();
@@ -14,145 +45,130 @@ void Navigator::navigate() {
  * =============================
  */
 
-/**
- * From a random starting location in the landing zone, drive the robot a little bit the rocky terrain
- */
-void Navigator::driveOverRockyTerrain() {
-  Serial.println("Navigating across rocky terrain");
+void Navigator::prepareToCrossRockyTerrain()
+{
+  Enes100.println("Preparing to cross rocky terrain");
   driveToMiddleLane();
   driveTrain->turnTo(0);
-  driveTrain->driveStraight(Field::ROCKY_TERRAIN_X - LocationManager::getBackX());
-  Serial.println("Crossed rocky terrain!!");
+  Enes100.println("Ready to cross rocky terrain!!");
 }
 
-void Navigator::driveToMiddleLane() {
-  Serial.println("Navigating to the middle lane");
+
+void Navigator::driveToMiddleLane()
+{
+  Enes100.println("Navigating to the middle lane");
   lane = Lane::MIDDLE;
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(Field::WIDTH / 2 - LocationManager::getY());
-  Serial.println("Reached the middle lane!!");
+  driveTrain->driveStraight(Field::WIDTH / 2 - LocationManager::getCenterY());
+  Enes100.println("Reached the middle lane!!");
 }
 
-/**
- * Drive to align the center of the OSV with the mission site's x-coordinate
- */
-void Navigator::reachMissionSiteX() {
+
+void Navigator::reachMissionSiteX()
+{
   // Drive straight until an obstacle is encountered
-  Serial.println("Horizontally aligning to the mission site...");
-  while(!driveTrain->driveStraight(Field::OBSTACLE_ENDZONE_X - LocationManager::getBackX())) {
+  Enes100.println("Horizontally aligning to the mission site...");
+  while (!driveTrain->driveStraight(Field::OBSTACLE_ENDZONE_X - LocationManager::getBackX()))
+  {
     swapLanes();
   }
-  Serial.println("Aligned with the mission site...");
+  Enes100.println("Aligned with the mission site...");
 }
 
-void Navigator::swapLanes() {
-  Serial.println("Swapping Lanes...");
+
+void Navigator::swapLanes()
+{
+  Enes100.println("Swapping Lanes...");
   turnUntilOpening();
   driveToNextLane();
   
-  if(lane == Lane::MIDDLE) {
-    lane = Lane::RIGHT;
-  } else {
-    lane = Lane::MIDDLE;
-  }
-  Serial.println("Swapped Lanes!!");
+  // Swap the instance lane variable
+  lane = (lane == Lane::MIDDLE) ? Lane::RIGHT : Lane::MIDDLE;
+  Enes100.println("Swapped Lanes!!");
 }
 
-void Navigator::turnUntilOpening() {
-  Serial.println("Turning until an opening...");
-  double turnSpeed = (lane == Lane::MIDDLE) ? -0.5 : 0.5;
-  
-  driveTrain->turn(turnSpeed);
-  while(obstaclesStillInTheWay()) {delay(200);}
-  driveTrain->stop();
-  Serial.println("Found an opening!!");
+
+void Navigator::turnUntilOpening()
+{
+  Enes100.println("Turning until an opening...");
+  driveTrain->turnTo((lane == Lane::MIDDLE)
+                         ? 360 - Angle::LANE_SHIFT
+                         : Angle::LANE_SHIFT);
+  Enes100.println("Found an opening!!");
 }
 
-bool Navigator::obstaclesStillInTheWay() {
+
+bool Navigator::obstaclesStillInTheWay()
+{
   // TODO: Make more accurate
-  return (lane == Lane::MIDDLE)
-    ? LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE
-    : LocationManager::getFrontRightDistance() < Distance::IR_MAX_RANGE;
+  return LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE;
 }
 
-void Navigator::driveToNextLane() {
-  Serial.println("Driving to next lane...");
+
+void Navigator::driveToNextLane()
+{
+  Enes100.println("Driving to next lane...");
   double headingInRadians = LocationManager::getCurrentLocation().theta;
-  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(headingInRadians)), LocationManager::getHeading(headingInRadians)); // TODO: Compute actual required distance
+  driveTrain->driveStraight(Field::OBSTACLE_LANE_WIDTH / abs(sin(headingInRadians)), LocationManager::getHeading(headingInRadians));
   driveTrain->turnTo(0);
-  Serial.println("Drove to next lane!!!");
+  Enes100.println("Drove to next lane!!!");
 }
 
-void Navigator::goTheDistance() {
-  Serial.println("I can find a way....");
+void Navigator::goTheDistance()
+{
+  Enes100.println("I can find a way....");
   //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
-  driveTrain->driveStraight(LocationManager::getMissionY() - LocationManager::getBottomY() - OSV::WIDTH + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->driveStraight(LocationManager::getMissionTopY() - LocationManager::getCenterY() + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
   driveTrain->turnTo(0);
-  driveTrain->driveStraight(LocationManager::getMissionX() - LocationManager::getX() + FireSite::EDGE_TO_CANDLE);
-  Serial.println("I can go the distance!!");
+  driveTrain->driveStraight(LocationManager::getMissionLeftX() - LocationManager::getCenterX() + FireSite::EDGE_TO_CANDLE);
+  Enes100.println("I can go the distance!!");
 }
-
 
 /**
  * ===========================
  *   Mission Navigation Code 
  * ===========================
  */
-void Navigator::countAndExtinguishFlames() {
-  Serial.println("Counting and extinguishing flames...");
 
-  // The angle to which you need to rotate on each cycle around the fire site
-  int angleList[] = { 270, 180, 90, 0 };
+void Navigator::countAndExtinguishFlames()
+{
+  Enes100.println("Counting and extinguishing flames...");
 
   // Go through every side of the fire site
-  for(int sideNum = 0; sideNum < FireSite::SIDE_COUNT; sideNum++) {
-    // Drive to and possibly extinguish the first candle
-    driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE);
-    extinguishingArm->extinguish();
-    
-    // Drive to and possibly extinguish the second candle
-    driveTrain->driveStraight(FireSite::CANDLE_TO_CANDLE);
-    extinguishingArm->extinguish();
-
-    // Prepare for the next side
-    driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + (OSV::LENGTH - OSV::WIDTH) / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
-    driveTrain->turnTo(angleList[sideNum]);
+  for (int sideNum = 0; sideNum < FireSite::SIDE_COUNT; sideNum++)
+  {
+    countAndExtinguishSide(sideNum);
   }
 
-  // Extinguish and count center flame
-  driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getX());
+  // Extinguish and count center flame by approaching from the top of the mission site
+  driveTrain->driveStraight(LocationManager::getMissionCenterX() - LocationManager::getCenterX());
   extinguishingArm->extinguish();
 
   extinguishingArm->reportFlameCount();
-  Serial.println("Counted and extinguished flames...");
-}
- 
-
-/**
- * ===============================
- *   Logic to Create a Navigator 
- * ===============================
- */
-
-/**
- * Creates a new Navigator
- */
-Navigator::Navigator() {
-  driveTrain = DriveTrain::getInstance();
-  lane = Lane::MIDDLE;
-  extinguishingArm = &ExtinguishingArm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
+  Enes100.println("Counted and extinguished flames...");
 }
 
-// Start off the Navigator instance as null
-Navigator* Navigator::instance = 0;
+void Navigator::countAndExtinguishSide(int sideNum)
+{
+  printPair("Extinguishing flames on side", sideNum + 1);
+  // The angle to which you need to rotate on each cycle around the fire site
+  const int angleList[] = {270, 180, 90, 0};
 
-/**
- * @return the one instance of the Navigator
- */
-Navigator* Navigator::getInstance() {
-  if(instance == 0) {
-    instance = new Navigator();
-  }
-  return instance;
+  // Drive to and possibly extinguish the first candle
+  Enes100.println("Dealing w/ candle 1...");
+  driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE);
+  extinguishingArm->extinguish();
+  Enes100.println("Finished candle 1!!");
+
+  // Drive to and possibly extinguish the second candle
+  Enes100.println("Dealing w/ candle 2...");
+  driveTrain->driveStraight(FireSite::CANDLE_TO_CANDLE);
+  extinguishingArm->extinguish();
+  Enes100.println("Finished candle 2!!");
+
+  // Prepare for the next side
+  driveTrain->driveStraight(FireSite::EDGE_TO_CANDLE + (OSV::LENGTH - OSV::WIDTH) / 2. + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET);
+  driveTrain->turnTo(angleList[sideNum]);
+  Enes100.println("Extinguished all flames on this side!");
 }
