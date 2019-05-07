@@ -2,12 +2,16 @@
 
 ExtinguishingArm::ExtinguishingArm(pin armMotorPin, pin flameSensorPin) : armMotor(),
                                                                           flameSensor(flameSensorPin),
+                                                                          armMotorPin(armMotorPin),
                                                                           flameCount(0)
 {
-  pinMode(armMotorPin, OUTPUT);
-  armMotor.write(0); // 0 the servo before attaching it
+}
+
+
+void ExtinguishingArm::init() {
   armMotor.attach(armMotorPin);
 }
+
 
 void ExtinguishingArm::extinguish()
 {
@@ -30,7 +34,9 @@ void ExtinguishingArm::reportFlameCount()
 
 void ExtinguishingArm::lower()
 {
-  for(int currentAngle = armMotor.read(); currentAngle < LOW_STATE_ANGLE; currentAngle++) {
+  for(int currentAngle = Angle::RESTING_ARM_ANGLE; currentAngle < Angle::EXTENDED_ARM_ANGLE; currentAngle++) {
+    Serial.print("\tLowering to ");
+    Serial.println(currentAngle);
     armMotor.write(currentAngle);
     delay(Motors::SERVO_COMMAND_DELAY_MS);
   }
@@ -38,7 +44,7 @@ void ExtinguishingArm::lower()
 
 void ExtinguishingArm::raise()
 {
-  for(int currentAngle = armMotor.read(); currentAngle > HIGH_STATE_ANGLE; currentAngle--) {
+  for(int currentAngle = Angle::EXTENDED_ARM_ANGLE; currentAngle > Angle::RESTING_ARM_ANGLE; currentAngle--) {
     armMotor.write(currentAngle);
     delay(Motors::SERVO_COMMAND_DELAY_MS);
   }

@@ -20,8 +20,10 @@ extern const pin RIGHT_ULTRASONIC_TRIGGER;
 // Motors
 extern const pin RIGHT_MOTOR_PWM;
 extern const pin LEFT_MOTOR_PWM;
-extern const pin RIGHT_MOTOR_DIR;
-extern const pin LEFT_MOTOR_DIR;
+extern const pin RIGHT_MOTOR_DIR1;
+extern const pin RIGHT_MOTOR_DIR2;
+extern const pin LEFT_MOTOR_DIR1;
+extern const pin LEFT_MOTOR_DIR2;
 extern const pin ARM_MOTOR;
 
 // Analog Input
@@ -50,6 +52,8 @@ namespace Angle
 // Angle Information
 extern const double EQUALITY_THRESHOLD;
 extern const double LANE_SHIFT;
+extern const int RESTING_ARM_ANGLE;
+extern const int EXTENDED_ARM_ANGLE;
 } // namespace Angle
 
 namespace OSV

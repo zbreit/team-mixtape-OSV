@@ -9,21 +9,30 @@
 class DCMotor
 {
   private:
-    const pin directionPin;  // The pin that controls the motor's direction
+    const pin directionPin1;  // The 1st pin that controls the motor's direction
+    const pin directionPin2;  // The 2nd pin that controls the motor's direction
     const pin speedPin;      // The pin that controls the speed of the motor
     const double speedCap;   // The fastest possible speed the motor should travel
     const double speedFloor; // The slowest possible speed the motor should travel
     const bool isReversed;   // Whether or not the motor direction should be flipped
+
+    /**
+     * Sets the direction of the motor based on the speed
+     * @param speed sets the direction to forwards if speed > 0, and backwards otherwise. These
+     * directions will be reversed if the isReversed field is set to true.
+     */
+    void setDirection(double speed);
   public:
     /**
      * Creates a new motor
-     * @param directionPin the pin that controls the motor's direction
+     * @param directionPin1 the 1st pin that controls the motor's direction
+     * @param directionPin2 the 2nd pin that controls the motor's direction
      * @param speedPin the pin that controls the motor's speed
      * @param speedFloor the slowest speed the OSV can travel. Should be a value between 0.0 and +1.0. Should be less than speedCap.
      * @param speedCap the fastest speed the OSV can travel. Should be a value between 0.0 and +1.0. Should be greater than speedFloor
      * @param isReversed true if the motors are connected in reverse, false otherwise.
      */
-    DCMotor(pin directionPin, pin speedPin, double speedFloor = 1.0, double speedCap = 0., bool isReversed = false);
+    DCMotor(pin directionPin1, pin directionPin2, pin speedPin, double speedFloor = 1.0, double speedCap = 0., bool isReversed = false);
 
     /**
      * Sets the motor to a desired speed. +1.0 is full-speed forward 

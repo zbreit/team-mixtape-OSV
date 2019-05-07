@@ -2,8 +2,8 @@
 
 DriveTrain *DriveTrain::instance = 0;
 
-DriveTrain::DriveTrain() : leftMotor(Pins::LEFT_MOTOR_DIR, Pins::LEFT_MOTOR_PWM, Motors::LEFT_MIN_COMMAND, Motors::LEFT_MAX_COMMAND, Motors::LEFT_IS_REVERSED),
-                           rightMotor(Pins::RIGHT_MOTOR_DIR, Pins::RIGHT_MOTOR_PWM, Motors::RIGHT_MIN_COMMAND, Motors::RIGHT_MAX_COMMAND, Motors::RIGHT_IS_REVERSED)
+DriveTrain::DriveTrain() : leftMotor(Pins::LEFT_MOTOR_DIR1, Pins::LEFT_MOTOR_DIR2, Pins::LEFT_MOTOR_PWM, Motors::LEFT_MIN_COMMAND, Motors::LEFT_MAX_COMMAND, Motors::LEFT_IS_REVERSED),
+                           rightMotor(Pins::RIGHT_MOTOR_DIR1, Pins::RIGHT_MOTOR_DIR2, Pins::RIGHT_MOTOR_PWM, Motors::RIGHT_MIN_COMMAND, Motors::RIGHT_MAX_COMMAND, Motors::RIGHT_IS_REVERSED)
 {
 }
 
@@ -37,7 +37,7 @@ void DriveTrain::turnTo(double angle)
 
   if(PIDTimer.isFinished())
   {
-    Enes100.print("turnTo() TIMED OUT");
+    Enes100.println("turnTo() TIMED OUT");
   } 
   else
   {

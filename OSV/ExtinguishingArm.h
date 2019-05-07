@@ -13,10 +13,9 @@ class ExtinguishingArm
 private:
   Servo armMotor;
   FlameSensor flameSensor;
+  int armMotorPin;
   int flameCount;
-  const int LOW_STATE_ANGLE = 70;
-  const int HIGH_STATE_ANGLE = 0;
-
+public: //TODO: remove, after testing
   /**
    * Lower the arm to the extinguishing position
    */
@@ -28,6 +27,11 @@ private:
   void raise();
 
 public:
+  /**
+   * Used to attach the servo motor to the correct pin
+   */
+  void init();
+  
   /**
    * Create an extinguishing arm
    * @param armMotorPin the signal pin of the arm servo 

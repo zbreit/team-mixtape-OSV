@@ -26,8 +26,8 @@ enum class Lane
 /**
  * Prints the following string: "{key}: {value}\n"
  */
-template <class V>
-void printPair(const char* key, V value) {
+template <typename V>
+void printPair(String key, V value) {
   // NOTE: This is declared here due to an intricacy with template functions
   // needing be defined and declared in the same file
   Enes100.print(key);
