@@ -1,7 +1,7 @@
 #include "Constants.h"
 
 // INFORMATION TO UPDATE
-const int OSV::ARUCO_MARKER_ID = 26;
+const int OSV::ARUCO_MARKER_ID = 10;
 
 // WIFI
 const pin Pins::WIFI_TRANSMITTER = 5;
