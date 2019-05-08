@@ -135,7 +135,7 @@ void Navigator::goTheDistance()
 void Navigator::countAndExtinguishFlames()
 {
   Enes100.println("Counting and extinguishing flames...");
-
+  extinguishingArm->init(); // Make sure the servo pin is attached
   // Go through every side of the fire site
   for (int sideNum = 0; sideNum < FireSite::SIDE_COUNT; sideNum++)
   {

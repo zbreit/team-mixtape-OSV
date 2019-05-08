@@ -5,8 +5,6 @@
 
 #include "Navigator.h"
 
-ExtinguishingArm arm(Pins::ARM_MOTOR, Pins::IR_FLAME_SENSOR);
-DriveTrain* dt = DriveTrain::getInstance();
 void setup()
 {
 //  arm.init();
@@ -17,8 +15,8 @@ void setup()
     delay(100);
   }
   Enes100.println("Connected!!!");
- Navigator* navigator = Navigator::getInstance();
- navigator->navigate();
+  Navigator* navigator = Navigator::getInstance();
+  navigator->navigate();
   // navigator->countAndExtinguishFlames();
 }
 
