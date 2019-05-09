@@ -34,7 +34,6 @@ void printPair(String key, V value) {
   Enes100.print(": ");
   Enes100.println(value);
 
-  //TODO: remove
   Serial.print(key);
   Serial.print(": ");
   Serial.println(value);

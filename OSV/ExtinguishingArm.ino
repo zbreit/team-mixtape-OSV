@@ -3,13 +3,15 @@
 ExtinguishingArm::ExtinguishingArm(pin armMotorPin, pin flameSensorPin) : armMotor(),
                                                                           flameSensor(flameSensorPin),
                                                                           armMotorPin(armMotorPin),
-                                                                          flameCount(0)
+                                                                          flameCount(1)         
+// Start the flame count at 1 to account for the center flame
 {
 }
 
 
 void ExtinguishingArm::init() {
   armMotor.attach(armMotorPin);
+  armMotor.write(0);
 }
 
 
@@ -19,7 +21,7 @@ void ExtinguishingArm::extinguish()
   {
     Enes100.println("Detected Flame");
     lower();
-    delay(5000); // TODO: Delay 5 seconds (CHANGE THIS IF UNRELIABLE)
+    delay(5000); // Assume extinguishment takes 5s 
     raise();
     flameCount++;
     Enes100.print("Extinguished Flame ");
@@ -27,10 +29,12 @@ void ExtinguishingArm::extinguish()
   }
 }
 
+
 void ExtinguishingArm::reportFlameCount()
 {
   Enes100.mission(flameCount);
 }
+
 
 void ExtinguishingArm::lower()
 {
@@ -41,6 +45,7 @@ void ExtinguishingArm::lower()
     delay(Motors::SERVO_COMMAND_DELAY_MS);
   }
 }
+
 
 void ExtinguishingArm::raise()
 {

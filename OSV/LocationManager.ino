@@ -17,7 +17,6 @@ Coordinate *LocationManager::MISSION_LOCATION = 0;
 
 void LocationManager::waitForLocationUpdate()
 {
-  //TODO: might need to add in a timer to prevent an infinite loop
   while (!Enes100.updateLocation()) {}
 }
 

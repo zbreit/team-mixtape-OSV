@@ -54,7 +54,6 @@ class DriveTrain
     void smartDrive(double speed, double angleToMaintain);
 
     /**
-     * TODO: determine if this should be private
      * Turns the robot at a given speed
      * @param speed the desired speed, where -1 is full speed right and  
      * +1 is full speed left

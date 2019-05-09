@@ -15,7 +15,7 @@ private:
   FlameSensor flameSensor;
   int armMotorPin;
   int flameCount;
-public: //TODO: remove, after testing
+  
   /**
    * Lower the arm to the extinguishing position
    */

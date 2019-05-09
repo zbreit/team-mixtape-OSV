@@ -100,8 +100,9 @@ void Navigator::turnUntilOpening()
 
 bool Navigator::obstaclesStillInTheWay()
 {
-  // TODO: Make more accurate
-  return LocationManager::getFrontLeftDistance() < Distance::ULTRASONIC_MAX_RANGE;
+  // If both distance sensor readings are below the maximum sensible distance, there are no obstacles in the ways
+  return max(LocationManager::getFrontLeftDistance(), LocationManager::getFrontLeftDistance())
+    < Distance::ULTRASONIC_MAX_RANGE;
 }
 
 
@@ -117,7 +118,6 @@ void Navigator::driveToNextLane()
 void Navigator::goTheDistance()
 {
   Enes100.println("I can find a way....");
-  //TODO: add in logic based on whether the OSV is above or below the mission
   driveTrain->turnTo(90);
   driveTrain->driveStraight(LocationManager::getMissionTopY() - LocationManager::getCenterY() 
     + OSV::WIDTH/2 + OSV::ARM_EXTENSION_LENGTH - FireSite::CANDLE_INSET + OSV::ARM_CENTER_OFFSET);
