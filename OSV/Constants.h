@@ -33,7 +33,7 @@ extern const pin ARM_MOTOR_POS;
 // WIFI
 extern const pin WIFI_TRANSMITTER;
 extern const pin WIFI_RECEIVER;
-} // namespace Pins
+}
 
 namespace Distance
 {
@@ -45,7 +45,7 @@ extern const double SAFE_FRONT_DISTANCE;
 extern const double REACHED_MISSION_SITE;
 extern const double ULTRASONIC_MAX_RANGE;
 extern const double IR_MAX_RANGE;
-} // namespace Distance
+}
 
 namespace Angle
 {
@@ -54,7 +54,7 @@ extern const double EQUALITY_THRESHOLD;
 extern const double LANE_SHIFT;
 extern const int RESTING_ARM_ANGLE;
 extern const int EXTENDED_ARM_ANGLE;
-} // namespace Angle
+}
 
 namespace OSV
 {
@@ -65,7 +65,7 @@ extern const int ARUCO_MARKER_ID;
 extern const double ARM_EXTENSION_LENGTH;
 extern const double ARUCO_MARKER_CENTER_OFFSET;
 extern const double ARM_CENTER_OFFSET;
-} // namespace OSV
+}
 
 namespace Field
 {
@@ -75,7 +75,7 @@ extern const double WIDTH;
 extern const double ROCKY_TERRAIN_X;
 extern const double OBSTACLE_LANE_WIDTH;
 extern const double OBSTACLE_ENDZONE_X;
-} // namespace Field
+}
 
 namespace FireSite
 {
@@ -85,18 +85,20 @@ extern const double EDGE_TO_CANDLE;
 extern const double CANDLE_TO_CANDLE;
 extern const double CANDLE_INSET;
 extern const int SIDE_COUNT;
-} // namespace FireSite
+}
 
 namespace PIDConstants
 {
-extern const double TURN_P; // Proportionality constant for turning
+// PID Constants for movment and control loops
+extern const double TURN_P;
 extern const double DRIVE_P;
-extern const double DRIVE_AT_ANGLE_P; // Proportionality constant for determining angular adjustments on each side
-extern const double COMMAND_TIMEOUT;  // The maximum duration of a given command in ms
-} // namespace PIDConstants
+extern const double DRIVE_AT_ANGLE_P;
+extern const double COMMAND_TIMEOUT;
+}
 
 namespace Motors
 {
+// Motor Constants and Properties
 extern const double LEFT_MIN_COMMAND;
 extern const double RIGHT_MIN_COMMAND;
 extern const double LEFT_MAX_COMMAND;
@@ -104,6 +106,6 @@ extern const double RIGHT_MAX_COMMAND;
 extern const bool LEFT_IS_REVERSED;
 extern const bool RIGHT_IS_REVERSED;
 extern const int SERVO_COMMAND_DELAY_MS;
-} // namespace Motors
+}
 
 #endif

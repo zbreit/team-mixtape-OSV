@@ -63,18 +63,21 @@ const double FireSite::EDGE_TO_CANDLE = 0.052;
 const double FireSite::CANDLE_TO_CANDLE = 0.12;
 const double FireSite::CANDLE_INSET = 0.05;
 const int FireSite::SIDE_COUNT = 4;
-
+extern const double TURN_P;
+extern const double DRIVE_P;
+extern const double DRIVE_AT_ANGLE_P; 
+extern const double COMMAND_TIMEOUT;  
 // PID Constants
-const double PIDConstants::TURN_P = 0.05;
-const double PIDConstants::DRIVE_P = 4.;
-const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;
-const double PIDConstants::COMMAND_TIMEOUT = 10000.;
+const double PIDConstants::TURN_P = 0.05;            // Proportionality constant for turning
+const double PIDConstants::DRIVE_P = 4.;             // Proportionality constant for driving straight
+const double PIDConstants::DRIVE_AT_ANGLE_P = 0.05;  // Proportionality constant for determining angular adjustments on each side
+const double PIDConstants::COMMAND_TIMEOUT = 10000.; // The maximum duration of a given command in ms
 
 // Motors
-const double Motors::LEFT_MIN_COMMAND = 0.2;  // The lowest left motor speed at which the robot will move
-const double Motors::RIGHT_MIN_COMMAND = 0.2; // The lowest right motor speed at which the robot will move
-const double Motors::LEFT_MAX_COMMAND = 1.;   // The highest left motor speed
-const double Motors::RIGHT_MAX_COMMAND = 1.;  // The highest right motor speed
-const bool Motors::LEFT_IS_REVERSED = false;  // Whether the polarity of the motor should be flipped
-const bool Motors::RIGHT_IS_REVERSED = false; // Whether the polarity of the motor should be flipped
+const double Motors::LEFT_MIN_COMMAND = 0.2;    // The lowest left motor speed at which the robot will move
+const double Motors::RIGHT_MIN_COMMAND = 0.2;   // The lowest right motor speed at which the robot will move
+const double Motors::LEFT_MAX_COMMAND = 1.;     // The highest left motor speed
+const double Motors::RIGHT_MAX_COMMAND = 1.;    // The highest right motor speed
+const bool Motors::LEFT_IS_REVERSED = false;    // Whether the polarity of the motor should be flipped
+const bool Motors::RIGHT_IS_REVERSED = false;   // Whether the polarity of the motor should be flipped
 const int Motors::SERVO_COMMAND_DELAY_MS = 150; // The delay between successive writes to the servo (used to slow down the rotation)
