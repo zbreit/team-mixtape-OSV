@@ -1,7 +1,7 @@
 # team-mixtape-OSV
 The codebase for ENES100 Team MIXTAPE's OSV
 
-<p align="center"><img src="https://i.imgur.com/aXHLwN2.jpg" alt="Our OSV" height="500"/></p>
+<p align="center"><img src="better-osv-img.jpg" alt="Our OSV" height="500"/></p>
 
 ## How to Navigate the Codebase
 All of the OSV logic is stored in the `OSV/` directory. The `OSVSimulation/` directory stores a version of the code that is compatible with the ENES100Simulator. The code was converted using the [ENES100SimulationTranslator](https://github.com/zbreit/ENES100SimulationTranslator). The code is structured as follows:
